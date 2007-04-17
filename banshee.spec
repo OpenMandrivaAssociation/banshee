@@ -1,5 +1,5 @@
 %define name banshee
-%define version 0.12.0
+%define version 0.12.1
 %define release %mkrel 1
 
 %define build_ipod 1
@@ -71,7 +71,7 @@ create audio and MP3 CDs from subsets of your library.
 Group: Sound
 Summary: Ipod support for Banshee
 Requires: %name = %version
-Buildrequires: ipod-sharp >= 0.6.2
+Buildrequires: ipod-sharp >= 0.6.3
 
 %description ipod
 With Banshee you can easily import, manage, and play selections from
@@ -104,6 +104,7 @@ Install this package for Nomad jukebox support in Banshee.
 Group: Sound
 Summary: MTP audio player support for Banshee
 Requires: %name = %version
+Requires: libgphoto2-sharp
 Buildrequires: libgphoto2-sharp
 
 %description mtp
