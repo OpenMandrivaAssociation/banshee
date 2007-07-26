@@ -1,6 +1,6 @@
 %define name banshee
 %define version 0.12.1
-%define release %mkrel 1
+%define release %mkrel 2
 
 %define build_ipod 1
 %define build_njb 1
@@ -22,7 +22,15 @@ Release: %{release}
 Source0: http://banshee-project.org/files/banshee/%{name}-%{version}.tar.bz2
 #Source0: http://banshee-project.org/files/banshee/%{name}-%{cvs}.tar.bz2
 # http://bugzilla.gnome.org/show_bug.cgi?id=350773
+Source1: generic-artist.png
 Patch: http://bobcopeland.com/karma/banshee/fix-transcode.patch
+# gw patches from Ubuntu:
+# gw fix Multimedia keys
+Patch1: 03_fix_2.18_multimedia_keys.patch
+# gw fix wavpack encoder profile
+Patch2: 05_wavpack-profile.patch
+# gw svn fixes
+Patch3: 10_branch-0.12.x-2007-06-14.patch
 License: BSD
 Group: Sound
 Url: http://banshee-project.org/index.php/Main_Page
@@ -152,8 +160,15 @@ cd src/Core
 %patch -p2
 cd ../..
 %endif
+%patch1 -p1
+%patch2 -p1
+%patch3 -p0
 ##setup -q -n %name
 #./autogen.sh
+aclocal -I build/m4/banshee -I build/m4/shamrock
+autoconf
+automake
+cp %SOURCE1 src/Plugins/Banshee.Plugins.Recommendation/
 
 %build
 %configure2_5x  \
@@ -206,12 +221,16 @@ ln -sf %_prefix/lib/libgphoto2-sharp/* .
 ln -sf %_libdir/karma-sharp/* .
 %endif
 
-
 find %buildroot -name \*.config -type f|xargs chmod 644
+
+#gw this depends on libtotem-plparser.so.1
+rm -rf %buildroot%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Radio* \
+       %buildroot%_sysconfdir/gconf/schemas/%{name}-plugin-radio.schemas 
 
 %post
 %{update_menus}
-%define schemas %{name}-core %{name}-interface %{name}-plugin-audioscrobbler %{name}-plugin-daap %{name}-plugin-metadatasearcher %{name}-plugin-minimode %{name}-plugin-mmkeys %{name}-plugin-notificationarea %{name}-plugin-podcast %{name}-plugin-radio %{name}-plugin-recommendation
+%define schemas %{name}-core %{name}-interface %{name}-plugin-audioscrobbler %{name}-plugin-daap %{name}-plugin-metadatasearcher %{name}-plugin-minimode %{name}-plugin-mmkeys %{name}-plugin-notificationarea %{name}-plugin-podcast %{name}-plugin-recommendation
+#%{name}-plugin-radio
 %post_install_gconf_schemas %schemas
 %update_scrollkeeper
 %update_icon_cache hicolor
@@ -251,7 +270,7 @@ rm -rf $RPM_BUILD_ROOT
 %_sysconfdir/gconf/schemas/%{name}-plugin-mmkeys.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-notificationarea.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-podcast.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-radio.schemas
+#%_sysconfdir/gconf/schemas/%{name}-plugin-radio.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-recommendation.schemas
 %_bindir/%name
 %dir %_libdir/%name/
@@ -267,7 +286,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.MMKeys*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.NotificationAreaIcon*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.Podcast*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Radio*
+#%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Radio*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.Recommendation*
 %_libdir/%name/*.exe*
 %_libdir/%name/*.dll*
