@@ -60,6 +60,8 @@ Requires: gstreamer0.10-plugins-ugly
 Requires: gstreamer0.10-cdparanoia
 Requires: gstreamer0.10-gnomevfs
 Requires: %mklibname musicbrainz 4
+#gw Radio plugin
+#Requires: %mklibname totem-plparser 1
 Provides: banshee-gstreamer banshee-official-plugins
 Obsoletes: banshee-gstreamer banshee-official-plugins
 #Suggests: gstreamer0.10-xing
