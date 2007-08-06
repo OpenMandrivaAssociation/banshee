@@ -1,6 +1,6 @@
 %define name banshee
 %define version 0.13.0
-%define release %mkrel 1
+%define release %mkrel 2
 
 %define build_ipod 1
 %define build_njb 1
@@ -36,7 +36,7 @@ BuildRequires: gstreamer0.10-cdparanoia
 BuildRequires: gstreamer0.10-gnomevfs
 BuildRequires: gstreamer0.10-plugins-good
 Buildrequires: gnome-desktop-devel
-Buildrequires: dbus-glib-devel
+Buildrequires: ndesk-dbus-glib
 Buildrequires: libnautilus-burn-devel
 Buildrequires: libmusicbrainz-devel
 BuildRequires: mono-tools >= 1.1.9
@@ -161,7 +161,7 @@ cd ../..
 #automake
 
 %build
-%configure2_5x  \
+%configure2_5x  --enable-external-ndesk-dbus \
 %if %build_mtp
  --enable-mtp \
 %endif
