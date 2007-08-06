@@ -1,6 +1,6 @@
 %define name banshee
-%define version 0.12.1
-%define release %mkrel 2
+%define version 0.13.0
+%define release %mkrel 1
 
 %define build_ipod 1
 %define build_njb 1
@@ -22,15 +22,7 @@ Release: %{release}
 Source0: http://banshee-project.org/files/banshee/%{name}-%{version}.tar.bz2
 #Source0: http://banshee-project.org/files/banshee/%{name}-%{cvs}.tar.bz2
 # http://bugzilla.gnome.org/show_bug.cgi?id=350773
-Source1: generic-artist.png
 Patch: http://bobcopeland.com/karma/banshee/fix-transcode.patch
-# gw patches from Ubuntu:
-# gw fix Multimedia keys
-Patch1: 03_fix_2.18_multimedia_keys.patch
-# gw fix wavpack encoder profile
-Patch2: 05_wavpack-profile.patch
-# gw svn fixes
-Patch3: 10_branch-0.12.x-2007-06-14.patch
 License: BSD
 Group: Sound
 Url: http://banshee-project.org/index.php/Main_Page
@@ -162,15 +154,11 @@ cd src/Core
 %patch -p2
 cd ../..
 %endif
-%patch1 -p1
-%patch2 -p1
-%patch3 -p0
 ##setup -q -n %name
 #./autogen.sh
-aclocal -I build/m4/banshee -I build/m4/shamrock
-autoconf
-automake
-cp %SOURCE1 src/Plugins/Banshee.Plugins.Recommendation/
+#aclocal -I build/m4/banshee -I build/m4/shamrock
+#autoconf
+#automake
 
 %build
 %configure2_5x  \
@@ -231,7 +219,7 @@ rm -rf %buildroot%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Radio* \
 
 %post
 %{update_menus}
-%define schemas %{name}-core %{name}-interface %{name}-plugin-audioscrobbler %{name}-plugin-daap %{name}-plugin-metadatasearcher %{name}-plugin-minimode %{name}-plugin-mmkeys %{name}-plugin-notificationarea %{name}-plugin-podcast %{name}-plugin-recommendation
+%define schemas %{name}-core %{name}-interface %{name}-plugin-audioscrobbler %{name}-plugin-daap %{name}-plugin-metadatasearcher %{name}-plugin-minimode %{name}-plugin-mmkeys %{name}-plugin-notificationarea %{name}-plugin-podcast %{name}-plugin-recommendation banshee-plugin-bookmarks
 #%{name}-plugin-radio
 %post_install_gconf_schemas %schemas
 %update_scrollkeeper
@@ -266,6 +254,7 @@ rm -rf $RPM_BUILD_ROOT
 %_sysconfdir/gconf/schemas/%{name}-core.schemas
 %_sysconfdir/gconf/schemas/%{name}-interface.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-audioscrobbler.schemas
+%_sysconfdir/gconf/schemas/%{name}-plugin-bookmarks.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-daap.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-metadatasearcher.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-minimode.schemas
@@ -282,6 +271,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%name/Banshee.MediaEngine/Banshee.MediaEngine.GStreamer*
 %_libdir/%name/Banshee.Dap/Banshee.Dap.MassStorage.dll*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.Audioscrobbler.dll*
+%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Bookmarks.dll*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.MetadataSearch*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.Daap*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.MiniMode*
