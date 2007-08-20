@@ -1,6 +1,6 @@
 %define name banshee
-%define version 0.13.0
-%define release %mkrel 2
+%define version 0.13.1
+%define release %mkrel 1
 
 %define build_ipod 1
 %define build_njb 1
@@ -52,14 +52,12 @@ Requires: gstreamer0.10-plugins-ugly
 Requires: gstreamer0.10-cdparanoia
 Requires: gstreamer0.10-gnomevfs
 Requires: %mklibname musicbrainz 4
-#gw Radio plugin
-#Requires: %mklibname totem-plparser 1
 Provides: banshee-gstreamer banshee-official-plugins
 Obsoletes: banshee-gstreamer banshee-official-plugins
-#Suggests: gstreamer0.10-xing
-#Suggests: gstreamer0.10-lame
-#Suggests: gstreamer0.10-faac
-#Suggests: gstreamer0.10-faad
+Suggests: gstreamer0.10-xing
+Suggests: gstreamer0.10-lame
+Suggests: gstreamer0.10-faac
+Suggests: gstreamer0.10-faad
 
 %description
 With Banshee you can easily import, manage, and play selections from
@@ -213,14 +211,10 @@ ln -sf %_libdir/karma-sharp/* .
 
 find %buildroot -name \*.config -type f|xargs chmod 644
 
-#gw this depends on libtotem-plparser.so.1
-rm -rf %buildroot%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Radio* \
-       %buildroot%_sysconfdir/gconf/schemas/%{name}-plugin-radio.schemas 
 
 %post
 %{update_menus}
-%define schemas %{name}-core %{name}-interface %{name}-plugin-audioscrobbler %{name}-plugin-daap %{name}-plugin-metadatasearcher %{name}-plugin-minimode %{name}-plugin-mmkeys %{name}-plugin-notificationarea %{name}-plugin-podcast %{name}-plugin-recommendation banshee-plugin-bookmarks
-#%{name}-plugin-radio
+%define schemas %{name}-core %{name}-interface %{name}-plugin-audioscrobbler %{name}-plugin-daap %{name}-plugin-metadatasearcher %{name}-plugin-minimode %{name}-plugin-mmkeys %{name}-plugin-notificationarea %{name}-plugin-podcast %{name}-plugin-recommendation banshee-plugin-bookmarks %{name}-plugin-radio
 %post_install_gconf_schemas %schemas
 %update_scrollkeeper
 %update_icon_cache hicolor
@@ -261,7 +255,7 @@ rm -rf $RPM_BUILD_ROOT
 %_sysconfdir/gconf/schemas/%{name}-plugin-mmkeys.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-notificationarea.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-podcast.schemas
-#%_sysconfdir/gconf/schemas/%{name}-plugin-radio.schemas
+%_sysconfdir/gconf/schemas/%{name}-plugin-radio.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-recommendation.schemas
 %_bindir/%name
 %dir %_libdir/%name/
@@ -278,7 +272,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.MMKeys*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.NotificationAreaIcon*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.Podcast*
-#%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Radio*
+%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Radio*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.Recommendation*
 %_libdir/%name/*.exe*
 %_libdir/%name/*.dll*
