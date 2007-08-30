@@ -1,6 +1,6 @@
 %define name banshee
 %define version 0.13.1
-%define release %mkrel 1
+%define release %mkrel 2
 
 %define build_ipod 1
 %define build_njb 1
@@ -23,6 +23,7 @@ Source0: http://banshee-project.org/files/banshee/%{name}-%{version}.tar.bz2
 #Source0: http://banshee-project.org/files/banshee/%{name}-%{cvs}.tar.bz2
 # http://bugzilla.gnome.org/show_bug.cgi?id=350773
 Patch: http://bobcopeland.com/karma/banshee/fix-transcode.patch
+Patch1: banshee-0.13.1-fix-pkgconfig-file-for-external-ndesk-dbus.patch
 License: BSD
 Group: Sound
 Url: http://banshee-project.org/index.php/Main_Page
@@ -152,11 +153,8 @@ cd src/Core
 %patch -p2
 cd ../..
 %endif
-##setup -q -n %name
-#./autogen.sh
-#aclocal -I build/m4/banshee -I build/m4/shamrock
-#autoconf
-#automake
+%patch1 -p1
+autoconf
 
 %build
 %configure2_5x  --enable-external-ndesk-dbus \
