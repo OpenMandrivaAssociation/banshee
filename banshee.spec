@@ -1,6 +1,6 @@
 %define name banshee
 %define version 0.13.1
-%define release %mkrel 3
+%define release %mkrel 4
 
 %define build_ipod 1
 %define build_njb 1
@@ -24,6 +24,7 @@ Source0: http://banshee-project.org/files/banshee/%{name}-%{version}.tar.bz2
 # http://bugzilla.gnome.org/show_bug.cgi?id=350773
 Patch: http://bobcopeland.com/karma/banshee/fix-transcode.patch
 Patch1: banshee-0.13.1-fix-pkgconfig-file-for-external-ndesk-dbus.patch
+Patch2: banshee-0.13.1-dllmap.patch
 License: BSD
 Group: Sound
 Url: http://banshee-project.org/index.php/Main_Page
@@ -45,7 +46,7 @@ Buildrequires: perl-XML-Parser
 Buildrequires: librsvg
 Buildrequires: desktop-file-utils
 BuildRequires: libnotify-devel
-
+BuildRequires: nss_mdns
 Buildrequires: gnome-common intltool
 Requires(post): desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -154,6 +155,7 @@ cd src/Core
 cd ../..
 %endif
 %patch1 -p1
+%patch2 -p1
 autoconf
 
 %build
