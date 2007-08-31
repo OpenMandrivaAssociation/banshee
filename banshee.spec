@@ -1,6 +1,6 @@
 %define name banshee
 %define version 0.13.1
-%define release %mkrel 2
+%define release %mkrel 3
 
 %define build_ipod 1
 %define build_njb 1
@@ -44,6 +44,7 @@ BuildRequires: mono-tools >= 1.1.9
 Buildrequires: perl-XML-Parser
 Buildrequires: librsvg
 Buildrequires: desktop-file-utils
+BuildRequires: libnotify-devel
 
 Buildrequires: gnome-common intltool
 Requires(post): desktop-file-utils
