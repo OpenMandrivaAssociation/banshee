@@ -178,14 +178,8 @@ mv %buildroot%buildroot/%_prefix/lib/monodoc/* %buildroot%_prefix/lib/monodoc/
 install -D -m 644 docs/MonodocNodeConfig.exe %buildroot%_libdir/banshee-doc/MonodocNodeConfig.exe
 %find_lang %name
 
-mkdir -p $RPM_BUILD_ROOT%{_menudir}
-cat << EOF > $RPM_BUILD_ROOT%{_menudir}/%{name} 
-?package(%{name}): command="%{_bindir}/%name" icon="music-player-banshee.png" longtitle="Music Management Application" title="Banshee" needs="x11" section="Multimedia/Sound" startup_notify="true" xdg="true"
-EOF
-
 desktop-file-install --vendor="" \
   --remove-category="Application" \
-  --add-category="X-MandrivaLinux-Multimedia-Sound" \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
 
 #icons
@@ -283,7 +277,6 @@ rm -rf $RPM_BUILD_ROOT
 %_datadir/dbus-1/services/*
 %_datadir/applications/%name.desktop
 %_datadir/icons/hicolor/*/apps/music-player-%name.*
-%_menudir/%name
 %_liconsdir/*.png
 %_iconsdir/*.png
 %_miconsdir/*.png
