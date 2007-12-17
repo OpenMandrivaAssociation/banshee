@@ -28,7 +28,6 @@ Patch2: banshee-0.13.1-dllmap.patch
 License: BSD
 Group: Sound
 Url: http://banshee-project.org/index.php/Main_Page
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel mono-data-sqlite
 Buildrequires: gnome-sharp2
 Buildrequires: sqlite3-devel
