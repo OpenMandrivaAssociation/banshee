@@ -1,6 +1,6 @@
 %define name banshee
-%define version 0.13.1
-%define release %mkrel 5
+%define version 0.13.2
+%define release %mkrel 1
 
 %define build_ipod 1
 %define build_njb 1
@@ -21,18 +21,16 @@ Version: %{version}
 Release: %{release}
 Source0: http://banshee-project.org/files/banshee/%{name}-%{version}.tar.bz2
 #Source0: http://banshee-project.org/files/banshee/%{name}-%{cvs}.tar.bz2
-# http://bugzilla.gnome.org/show_bug.cgi?id=350773
-Patch: http://bobcopeland.com/karma/banshee/fix-transcode.patch
-Patch1: banshee-0.13.1-fix-pkgconfig-file-for-external-ndesk-dbus.patch
-Patch2: banshee-0.13.1-dllmap.patch
+# gw remove bogus dep on nss_mdns
+Patch2: banshee-0.13.2-dllmap.patch
 License: BSD
 Group: Sound
 Url: http://banshee-project.org/index.php/Main_Page
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Buildrequires: mono-devel mono-data-sqlite
+Buildrequires: mono-devel
+Buildrequires: mono-zeroconf
 Buildrequires: gnome-sharp2
 Buildrequires: sqlite3-devel
-BuildRequires: avahi-sharp
 Buildrequires: libgstreamer-plugins-base-devel
 BuildRequires: gstreamer0.10-cdparanoia
 BuildRequires: gstreamer0.10-gnomevfs
@@ -46,7 +44,6 @@ Buildrequires: perl-XML-Parser
 Buildrequires: librsvg
 Buildrequires: desktop-file-utils
 BuildRequires: libnotify-devel
-BuildRequires: nss_mdns
 Buildrequires: gnome-common intltool
 Requires(post): desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -106,8 +103,7 @@ Install this package for Nomad jukebox support in Banshee.
 Group: Sound
 Summary: MTP audio player support for Banshee
 Requires: %name = %version
-Requires: libgphoto2-sharp
-Buildrequires: libgphoto2-sharp
+Buildrequires: libmtp-devel >= 0.2.1
 
 %description mtp
 With Banshee you can easily import, manage, and play selections from
@@ -149,13 +145,7 @@ Monodoc format.
 
 %prep
 %setup -q -n %name-%version
-%if %build_karma
-cd src/Core
-%patch -p2
-cd ../..
-%endif
-%patch1 -p1
-%patch2 -p1
+%patch2 -p1 -b .dllmap
 autoconf
 
 %build
@@ -173,8 +163,6 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT %name.lang
 %makeinstall_std MONO=true
-mkdir -p %buildroot%_prefix/lib/monodoc/
-mv %buildroot%buildroot/%_prefix/lib/monodoc/* %buildroot%_prefix/lib/monodoc/
 install -D -m 644 docs/MonodocNodeConfig.exe %buildroot%_libdir/banshee-doc/MonodocNodeConfig.exe
 %find_lang %name
 
@@ -196,9 +184,6 @@ ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp.dll*,ipod-sharp-ui.dll*} .
 %if %build_njb
 ln -sf %_libdir/njb-sharp/*njb* .
 %endif
-%if %build_mtp
-ln -sf %_prefix/lib/libgphoto2-sharp/* .
-%endif
 %if %build_karma
 ln -sf %_libdir/karma-sharp/* .
 %endif
@@ -208,7 +193,7 @@ find %buildroot -name \*.config -type f|xargs chmod 644
 
 %post
 %{update_menus}
-%define schemas %{name}-core %{name}-interface %{name}-plugin-audioscrobbler %{name}-plugin-daap %{name}-plugin-metadatasearcher %{name}-plugin-minimode %{name}-plugin-mmkeys %{name}-plugin-notificationarea %{name}-plugin-podcast %{name}-plugin-recommendation banshee-plugin-bookmarks %{name}-plugin-radio
+%define schemas %{name}-core %{name}-interface %{name}-plugin-audioscrobbler %{name}-plugin-daap %{name}-plugin-metadatasearcher %{name}-plugin-minimode %{name}-plugin-mmkeys %{name}-plugin-notificationarea %{name}-plugin-podcast %{name}-plugin-recommendation banshee-plugin-bookmarks %{name}-plugin-radio banshee-plugin-lastfm
 %post_install_gconf_schemas %schemas
 %update_scrollkeeper
 %update_icon_cache hicolor
@@ -244,6 +229,7 @@ rm -rf $RPM_BUILD_ROOT
 %_sysconfdir/gconf/schemas/%{name}-plugin-audioscrobbler.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-bookmarks.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-daap.schemas
+%_sysconfdir/gconf/schemas/%{name}-plugin-lastfm.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-metadatasearcher.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-minimode.schemas
 %_sysconfdir/gconf/schemas/%{name}-plugin-mmkeys.schemas
@@ -262,6 +248,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.Bookmarks.dll*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.MetadataSearch*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.Daap*
+%_libdir/%name/Banshee.Plugins/Banshee.Plugins.LastFM*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.MiniMode*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.MMKeys*
 %_libdir/%name/Banshee.Plugins/Banshee.Plugins.NotificationAreaIcon*
@@ -299,7 +286,7 @@ rm -rf $RPM_BUILD_ROOT
 %files mtp
 %defattr(-,root,root)
 %_libdir/%name/Banshee.Dap/Banshee.Dap.Mtp*
-%_libdir/%name/Banshee.Dap/libgphoto2-sharp*
+%_libdir/%name/Banshee.Dap/libmtp-sharp.dll*
 %endif
 
 %if %build_karma
