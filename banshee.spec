@@ -1,6 +1,6 @@
 %define name banshee
 %define version 0.13.2
-%define release %mkrel 4
+%define release %mkrel 5
 
 %define build_ipod 1
 %define build_njb 1
@@ -146,7 +146,6 @@ Monodoc format.
 %prep
 %setup -q -n %name-%version
 %patch2 -p1 -b .dllmap
-autoconf
 
 %build
 %configure2_5x  --enable-external-ndesk-dbus \
@@ -168,6 +167,11 @@ install -D -m 644 docs/MonodocNodeConfig.exe %buildroot%_libdir/banshee-doc/Mono
 
 desktop-file-install --vendor="" \
   --remove-category="Application" \
+  --add-mime-type="x-content/audio-cdda" \
+  --add-mime-type="x-content/audio-dvd" \
+%if %build_ipod || %build_njb || %build_mtp || %build_karma
+  --add-mime-type="x-content/audio-player" \
+%endif
   --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
 
 #icons
