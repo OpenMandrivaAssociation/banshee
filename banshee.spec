@@ -29,7 +29,7 @@ Url: http://banshee-project.org/index.php/Main_Page
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel
 Buildrequires: mono-zeroconf
-Buildrequires: gnome-sharp2
+Buildrequires: gnome-sharp2-devel
 Buildrequires: sqlite3-devel
 Buildrequires: libgstreamer-plugins-base-devel
 BuildRequires: gstreamer0.10-cdparanoia
