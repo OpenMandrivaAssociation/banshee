@@ -21,6 +21,7 @@ Version: %{version}
 Release: %{release}
 Source0: http://banshee-project.org/files/banshee/%{name}-%{version}.tar.bz2
 #Source0: http://banshee-project.org/files/banshee/%{name}-%{cvs}.tar.bz2
+Patch: banshee-0.13.2-new-mono.patch
 # gw remove bogus dep on nss_mdns
 Patch2: banshee-0.13.2-dllmap.patch
 License: BSD
@@ -145,6 +146,7 @@ Monodoc format.
 
 %prep
 %setup -q -n %name-%version
+%patch -p0
 %patch2 -p1 -b .dllmap
 
 %build
