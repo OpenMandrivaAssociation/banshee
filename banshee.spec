@@ -1,9 +1,10 @@
 %define name banshee
-%define version 0.13.2
-%define release %mkrel 6
+%define version 1.0.0
+%define release %mkrel 1
+%define oname banshee-1
 
 %define build_ipod 1
-%define build_njb 1
+%define build_njb 0
 %define build_mtp 1
 %define build_karma 0
 
@@ -19,17 +20,15 @@ Summary: Music player with mobile player support
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: http://banshee-project.org/files/banshee/%{name}-%{version}.tar.bz2
+Source0: http://banshee-project.org/files/banshee/%{oname}-%{version}.tar.bz2
 #Source0: http://banshee-project.org/files/banshee/%{name}-%{cvs}.tar.bz2
-Patch: banshee-0.13.2-new-mono.patch
-# gw remove bogus dep on nss_mdns
-Patch2: banshee-0.13.2-dllmap.patch
-License: BSD
+License: MIT
 Group: Sound
-Url: http://banshee-project.org/index.php/Main_Page
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+Url: http://banshee-project.org/OnePointEx
+BuildRoot: %{_tmppath}/%{oname}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel
-Buildrequires: mono-zeroconf
+#Buildrequires: mono-zeroconf
+Buildrequires: mono-addins
 Buildrequires: gnome-sharp2-devel
 Buildrequires: sqlite3-devel
 Buildrequires: libgstreamer-plugins-base-devel
@@ -38,13 +37,15 @@ BuildRequires: gstreamer0.10-gnomevfs
 BuildRequires: gstreamer0.10-plugins-good
 Buildrequires: gnome-desktop-devel
 Buildrequires: ndesk-dbus-glib
-Buildrequires: libnautilus-burn-devel
-Buildrequires: libmusicbrainz-devel
+Buildrequires: taglib-sharp
+Buildrequires: notify-sharp
+Buildrequires: libmtp-devel >= 0.2.1
+Buildrequires: ipod-sharp
+Buildrequires: boo
 BuildRequires: mono-tools >= 1.1.9
 Buildrequires: perl-XML-Parser
 Buildrequires: librsvg
 Buildrequires: desktop-file-utils
-BuildRequires: libnotify-devel
 Buildrequires: gnome-common intltool
 Requires(post): desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -52,12 +53,13 @@ Requires: gstreamer0.10-plugins-base
 Requires: gstreamer0.10-plugins-ugly
 Requires: gstreamer0.10-cdparanoia
 Requires: gstreamer0.10-gnomevfs
-Provides: banshee-gstreamer banshee-official-plugins
-Obsoletes: banshee-gstreamer banshee-official-plugins
+Provides: banshee-gstreamer banshee-official-plugins banshee-1
+Obsoletes: banshee-gstreamer banshee-official-plugins banshee-1
 Suggests: gstreamer0.10-xing
 Suggests: gstreamer0.10-lame
 Suggests: gstreamer0.10-faac
 Suggests: gstreamer0.10-faad
+Suggests: brasero
 
 %description
 With Banshee you can easily import, manage, and play selections from
@@ -139,74 +141,36 @@ Summary: Development documentation for %name
 Group: Development/Other
 Requires(post): mono-tools >= 1.1.9
 Requires(postun): mono-tools >= 1.1.9
+Provides: banshee-1-doc
+Obsoletes: banshee-1-doc
 
 %description doc
 This package contains the API documentation for the %name in
 Monodoc format.
 
 %prep
-%setup -q -n %name-%version
-%patch -p0
-%patch2 -p1 -b .dllmap
+%setup -q -n %oname-%version
 
 %build
 %configure2_5x  --enable-external-ndesk-dbus \
-%if %build_mtp
  --enable-mtp \
-%endif
-%if %build_karma
  --enable-karma \
-%endif
  --with-gstreamer-0-10 
 
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT %name.lang
+rm -rf $RPM_BUILD_ROOT %oname.lang
 %makeinstall_std MONO=true
-install -D -m 644 docs/MonodocNodeConfig.exe %buildroot%_libdir/banshee-doc/MonodocNodeConfig.exe
-%find_lang %name
+%find_lang %oname
+ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/Extensions
 
-desktop-file-install --vendor="" \
-  --remove-category="Application" \
-  --add-mime-type="x-content/audio-cdda" \
-  --add-mime-type="x-content/audio-dvd" \
-%if %build_ipod || %build_njb || %build_mtp || %build_karma
-  --add-mime-type="x-content/audio-player" \
-%endif
-  --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
-
-#icons
-mkdir -p %buildroot{%_liconsdir,%_miconsdir}
-rsvg -w 48 -h 48 data/images/music-player-banshee.svg %buildroot%_miconsdir/music-player-banshee.png
-rsvg -w 32 -h 32 data/images/music-player-banshee.svg %buildroot%_iconsdir/music-player-banshee.png
-rsvg -w 16 -h 16 data/images/music-player-banshee.svg %buildroot%_liconsdir/music-player-banshee.png
-
-rm -f %buildroot%_libdir/%name/*.a
-cd %buildroot%_libdir/%name/Banshee.Dap/
-%if %build_ipod
-ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp.dll*,ipod-sharp-ui.dll*} .
-%endif
-%if %build_njb
-ln -sf %_libdir/njb-sharp/*njb* .
-%endif
-%if %build_karma
-ln -sf %_libdir/karma-sharp/* .
-%endif
-
-find %buildroot -name \*.config -type f|xargs chmod 644
-
+rm -f %buildroot%_libdir/%oname/*.a
 
 %post
 %{update_menus}
-%define schemas %{name}-core %{name}-interface %{name}-plugin-audioscrobbler %{name}-plugin-daap %{name}-plugin-metadatasearcher %{name}-plugin-minimode %{name}-plugin-mmkeys %{name}-plugin-notificationarea %{name}-plugin-podcast %{name}-plugin-recommendation banshee-plugin-bookmarks %{name}-plugin-radio banshee-plugin-lastfm
-%post_install_gconf_schemas %schemas
-%update_scrollkeeper
 %update_icon_cache hicolor
 %update_desktop_database
-
-%preun
-%preun_uninstall_gconf_schemas %schemas
 
 %postun
 %{clean_menus}
@@ -214,11 +178,7 @@ find %buildroot -name \*.config -type f|xargs chmod 644
 %clean_desktop_database
 
 %post doc
-%_bindir/mono %_libdir/banshee-doc/MonodocNodeConfig.exe --insert "Banshee Libraries" classlib-banshee %_prefix/lib/monodoc/sources/../monodoc.xml
 %_bindir/monodoc --make-index > /dev/null
-
-%preun doc
-if [ "$1" = "0" ]; then %_bindir/mono %_libdir/banshee-doc/MonodocNodeConfig.exe --remove classlib-banshee %_prefix/lib/monodoc/sources/../monodoc.xml; fi
 
 %postun doc
 if [ "$1" = "0" -a -x %_bindir/monodoc ]; then %_bindir/monodoc --make-index > /dev/null
@@ -227,84 +187,66 @@ fi
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f %name.lang
+%files -f %oname.lang
 %defattr(-,root,root)
 %doc NEWS README ChangeLog AUTHORS
-%_sysconfdir/gconf/schemas/%{name}-core.schemas
-%_sysconfdir/gconf/schemas/%{name}-interface.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-audioscrobbler.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-bookmarks.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-daap.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-lastfm.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-metadatasearcher.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-minimode.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-mmkeys.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-notificationarea.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-podcast.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-radio.schemas
-%_sysconfdir/gconf/schemas/%{name}-plugin-recommendation.schemas
-%_bindir/%name
-%dir %_libdir/%name/
-%dir %_libdir/%name/Banshee.MediaEngine/
-%dir %_libdir/%name/Banshee.Dap/
-%dir %_libdir/%name/Banshee.Plugins
-%_libdir/%name/Banshee.MediaEngine/Banshee.MediaEngine.GStreamer*
-%_libdir/%name/Banshee.Dap/Banshee.Dap.MassStorage.dll*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Audioscrobbler.dll*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Bookmarks.dll*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.MetadataSearch*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Daap*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.LastFM*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.MiniMode*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.MMKeys*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.NotificationAreaIcon*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Podcast*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Radio*
-%_libdir/%name/Banshee.Plugins/Banshee.Plugins.Recommendation*
-%_libdir/%name/*.exe*
-%_libdir/%name/*.dll*
-%_libdir/%name/*.so
-%attr(644,root,root) %_libdir/%name/*.la
-%_libdir/pkgconfig/%name.pc
-%_datadir/%name/
+%_bindir/%oname
+%dir %_libdir/%oname/
+%_libdir/%oname/Backends
+%dir %_libdir/%oname/Extensions
+%_libdir/%oname/Extensions/Banshee.AudioCd.dll*
+%_libdir/%oname/Extensions/Banshee.Bookmarks.dll*
+%_libdir/%oname/Extensions/Banshee.BooScript.dll*
+%_libdir/%oname/Extensions/Banshee.CoverArt.dll*
+%_libdir/%oname/Extensions/Banshee.Dap.MassStorage.dll*
+%_libdir/%oname/Extensions/Banshee.Dap.dll*
+%_libdir/%oname/Extensions/Banshee.FileSystemQueue.dll*
+%_libdir/%oname/Extensions/Banshee.Lastfm.dll*
+%_libdir/%oname/Extensions/Banshee.MiniMode.dll*
+%_libdir/%oname/Extensions/Banshee.MultimediaKeys.dll*
+%_libdir/%oname/Extensions/Banshee.NotificationArea.dll*
+%_libdir/%oname/Extensions/Banshee.NowPlaying.dll*
+%_libdir/%oname/Extensions/Banshee.PlayQueue.dll*
+%_libdir/%oname/Extensions/Banshee.Podcasting.dll*
+%_libdir/%oname/*.exe*
+%_libdir/%oname/*.dll*
+%_libdir/%oname/*.so
+%_libdir/%oname/Banshee.Services.addins
+%attr(644,root,root) %_libdir/%oname/*.la
+%_libdir/pkgconfig/%{oname}*.pc
+%_datadir/%oname/
 %_datadir/dbus-1/services/*
-%_datadir/applications/%name.desktop
-%_datadir/icons/hicolor/*/apps/music-player-%name.*
-%_liconsdir/*.png
-%_iconsdir/*.png
-%_miconsdir/*.png
+%_datadir/applications/%oname.desktop
+%_datadir/icons/hicolor/*/apps/*
 
+%files doc
+%defattr(-,root,root)
+%_prefix/lib/monodoc/sources/banshee-docs*
+%_prefix/lib/monodoc/sources/hyena-docs*
 
 %if %build_ipod
 %files ipod
 %defattr(-,root,root)
-%_libdir/%name/Banshee.Dap/Banshee.Dap.Ipod.dll*
-%_libdir/%name/Banshee.Dap/ipod-sharp*
+%_libdir/%oname/Extensions/Banshee.Dap.Ipod.dll*
+%_libdir/%oname/Extensions/ipod-sharp*
 %endif
 
 %if %build_njb
 %files njb
 %defattr(-,root,root)
-%_libdir/%name/Banshee.Dap/*jb*
+%_libdir/%oname/Extensions/Banshee.Dap/*jb*
 %endif
 
 %if %build_mtp
 %files mtp
 %defattr(-,root,root)
-%_libdir/%name/Banshee.Dap/Banshee.Dap.Mtp*
-%_libdir/%name/Banshee.Dap/libmtp-sharp.dll*
+%_libdir/%oname/Extensions/Banshee.Dap.Mtp.dll*
 %endif
 
 %if %build_karma
 %files karma
 %defattr(-,root,root)
-%_libdir/%name/Banshee.Dap/Banshee.Dap.Karma*
-%_libdir/%name/Banshee.Dap/karma-sharp*
+%_libdir/%oname/Banshee.Dap/Banshee.Dap.Karma*
+%_libdir/%oname/Banshee.Dap/karma-sharp*
 %endif
-
-%files doc
-%defattr(-,root,root)
-%_prefix/lib/monodoc/sources/banshee-docs*
-%_libdir/banshee-doc/
-
 
