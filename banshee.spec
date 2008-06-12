@@ -167,15 +167,19 @@ ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libd
 
 rm -f %buildroot%_libdir/%oname/*.a
 
+%if %mdkversion < 200900
 %post
 %{update_menus}
 %update_icon_cache hicolor
 %update_desktop_database
+%endif
 
+%if %mdkversion < 200900
 %postun
 %{clean_menus}
 %clean_icon_cache hicolor
 %clean_desktop_database
+%endif
 
 %post doc
 %_bindir/monodoc --make-index > /dev/null
