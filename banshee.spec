@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.0.0
-%define release %mkrel 2
+%define version 1.2.0
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -27,11 +27,12 @@ Group: Sound
 Url: http://banshee-project.org/OnePointEx
 BuildRoot: %{_tmppath}/%{oname}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel
-#Buildrequires: mono-zeroconf
+Buildrequires: mono-zeroconf
 Buildrequires: mono-addins
 Buildrequires: gnome-sharp2-devel
 Buildrequires: sqlite3-devel
 Buildrequires: libgstreamer-plugins-base-devel
+Buildrequires: libxrandr-devel libxxf86vm-devel
 BuildRequires: gstreamer0.10-cdparanoia
 BuildRequires: gstreamer0.10-gnomevfs
 BuildRequires: gstreamer0.10-plugins-good
@@ -43,7 +44,6 @@ Buildrequires: libmtp-devel >= 0.2.1
 Buildrequires: ipod-sharp
 Buildrequires: boo
 BuildRequires: mono-tools >= 1.1.9
-Buildrequires: perl-XML-Parser
 Buildrequires: librsvg
 Buildrequires: desktop-file-utils
 Buildrequires: gnome-common intltool
@@ -165,7 +165,7 @@ rm -rf $RPM_BUILD_ROOT %oname.lang
 %find_lang %oname
 ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/Extensions
 
-rm -f %buildroot%_libdir/%oname/*.a
+rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a
 
 %if %mdkversion < 200900
 %post
@@ -202,9 +202,11 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/Extensions/Banshee.Bookmarks.dll*
 %_libdir/%oname/Extensions/Banshee.BooScript.dll*
 %_libdir/%oname/Extensions/Banshee.CoverArt.dll*
+%_libdir/%oname/Extensions/Banshee.Daap.dll*
 %_libdir/%oname/Extensions/Banshee.Dap.MassStorage.dll*
 %_libdir/%oname/Extensions/Banshee.Dap.dll*
 %_libdir/%oname/Extensions/Banshee.FileSystemQueue.dll*
+%_libdir/%oname/Extensions/Banshee.InternetRadio.dll*
 %_libdir/%oname/Extensions/Banshee.Lastfm.dll*
 %_libdir/%oname/Extensions/Banshee.MiniMode.dll*
 %_libdir/%oname/Extensions/Banshee.MultimediaKeys.dll*
@@ -215,6 +217,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/*.exe*
 %_libdir/%oname/*.dll*
 %_libdir/%oname/*.so
+%_libdir/%oname/gstreamer-0.10/
 %_libdir/%oname/Banshee.Services.addins
 %attr(644,root,root) %_libdir/%oname/*.la
 %_libdir/pkgconfig/%{oname}*.pc
