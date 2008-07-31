@@ -9,10 +9,6 @@
 %define build_karma 0
 %define build_boo 1
 
-%if %mdvver < 200900
-#gw boo is in contrib in 2008.1
-%define build_boo 0
-%endif
 
 %{?_without_ipod: %{expand: %%global build_ipod 0}}
 %{?_without_njb: %{expand: %%global build_njb 0}}
