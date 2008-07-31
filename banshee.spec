@@ -24,7 +24,7 @@ Source0: http://banshee-project.org/files/banshee/%{oname}-%{version}.tar.bz2
 #Source0: http://banshee-project.org/files/banshee/%{name}-%{cvs}.tar.bz2
 License: MIT
 Group: Sound
-Url: http://banshee-project.org/OnePointEx
+Url: http://banshee-project.org/
 BuildRoot: %{_tmppath}/%{oname}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel
 Buildrequires: mono-zeroconf
