@@ -7,6 +7,12 @@
 %define build_njb 0
 %define build_mtp 1
 %define build_karma 0
+%define build_boo 1
+
+%if %mdvver < 200900
+#gw boo is in contrib in 2008.1
+%define build_boo 0
+%endif
 
 %{?_without_ipod: %{expand: %%global build_ipod 0}}
 %{?_without_njb: %{expand: %%global build_njb 0}}
@@ -15,6 +21,9 @@
 %{?_with_mtp: %{expand: %%global build_mtp 1}}
 %{?_without_karma: %{expand: %%global build_karma 0}}
 %{?_with_karma: %{expand: %%global build_karma 1}}
+%{?_without_boo: %{expand: %%global build_boo 0}}
+%{?_with_boo: %{expand: %%global build_boo 1}}
+
 
 Summary: Music player with mobile player support
 Name: %{name}
@@ -44,7 +53,9 @@ Buildrequires: taglib-sharp
 Buildrequires: notify-sharp
 Buildrequires: libmtp-devel >= 0.2.1
 Buildrequires: ipod-sharp
+%if %build_boo
 Buildrequires: boo
+%endif
 BuildRequires: mono-tools >= 1.1.9
 Buildrequires: librsvg
 Buildrequires: desktop-file-utils
@@ -202,7 +213,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %_libdir/%oname/Extensions
 %_libdir/%oname/Extensions/Banshee.AudioCd.dll*
 %_libdir/%oname/Extensions/Banshee.Bookmarks.dll*
+%if %build_boo
 %_libdir/%oname/Extensions/Banshee.BooScript.dll*
+%endif
 %_libdir/%oname/Extensions/Banshee.CoverArt.dll*
 %_libdir/%oname/Extensions/Banshee.Daap.dll*
 %_libdir/%oname/Extensions/Banshee.Dap.MassStorage.dll*
