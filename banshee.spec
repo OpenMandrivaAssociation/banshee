@@ -33,6 +33,8 @@ Buildrequires: gnome-sharp2-devel
 Buildrequires: sqlite3-devel
 Buildrequires: libgstreamer-plugins-base-devel
 Buildrequires: libxrandr-devel libxxf86vm-devel
+#gw needed for 2008.1:
+Buildrequires: libxcb-devel
 BuildRequires: gstreamer0.10-cdparanoia
 BuildRequires: gstreamer0.10-gnomevfs
 BuildRequires: gstreamer0.10-plugins-good
