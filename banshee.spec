@@ -34,7 +34,11 @@ BuildRoot: %{_tmppath}/%{oname}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel
 Buildrequires: mono-zeroconf
 Buildrequires: mono-addins
+%if %mdvver < 200900
+Buildrequires: gnome-sharp2
+%else
 Buildrequires: gnome-sharp2-devel
+%endif
 Buildrequires: sqlite3-devel
 Buildrequires: libgstreamer-plugins-base-devel
 Buildrequires: libxrandr-devel libxxf86vm-devel
