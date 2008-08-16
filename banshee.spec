@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.2.1
-%define release %mkrel 1
+%define release %mkrel 2
 %define oname banshee-1
 
 %define build_ipod 1
@@ -179,6 +179,9 @@ rm -rf $RPM_BUILD_ROOT %oname.lang
 ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/Extensions
 
 rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a
+
+#gw fix paths in pkgconfig files
+perl -pi -e "s^/lib$^/%_lib^" %buildroot%_libdir/pkgconfig/*.pc
 
 %if %mdkversion < 200900
 %post
