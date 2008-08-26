@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.2.1
-%define release %mkrel 3
+%define release %mkrel 4
 %define oname banshee-1
 
 %define build_ipod 1
@@ -176,7 +176,8 @@ make
 rm -rf $RPM_BUILD_ROOT %oname.lang
 %makeinstall_std MONO=true
 %find_lang %oname
-ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/Extensions
+ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/
+rm -f %buildroot%_libdir/%oname/ipod-sharp*
 
 rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a
 
@@ -253,7 +254,7 @@ rm -rf $RPM_BUILD_ROOT
 %files ipod
 %defattr(-,root,root)
 %_libdir/%oname/Extensions/Banshee.Dap.Ipod.dll*
-%_libdir/%oname/Extensions/ipod-sharp*
+%_libdir/%oname/ipod-sharp*
 %endif
 
 %if %build_njb
