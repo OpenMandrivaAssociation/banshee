@@ -178,7 +178,7 @@ rm -rf $RPM_BUILD_ROOT %oname.lang
 %makeinstall_std MONO=true
 %find_lang %oname
 ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/
-rm -f %buildroot%_libdir/%oname/ipod-sharp*
+rm -f %buildroot%_libdir/%oname/Extensions/ipod-sharp*
 
 rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a
 
