@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.2.1
-%define release %mkrel 4
+%define release %mkrel 5
 %define oname banshee-1
 
 %define build_ipod 1
@@ -26,7 +26,10 @@ Name: %{name}
 Version: %{version}
 Release: %{release}
 Source0: http://banshee-project.org/files/banshee/%{oname}-%{version}.tar.bz2
-#Source0: http://banshee-project.org/files/banshee/%{name}-%{cvs}.tar.bz2
+#gw from Suse, allow build with mono 1.2.5
+Patch: gmcs-1.2.5-workarounds.patch
+#gw from Suse, fix a crash
+Patch1: now-playing-cover-art-crash.patch
 License: MIT
 Group: Sound
 Url: http://banshee-project.org/
@@ -164,6 +167,9 @@ Monodoc format.
 
 %prep
 %setup -q -n %oname-%version
+%patch0
+%patch1
+
 
 %build
 %configure2_5x  --enable-external-ndesk-dbus \
