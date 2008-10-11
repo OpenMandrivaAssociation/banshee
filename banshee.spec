@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.2.1
-%define release %mkrel 5
+%define version 1.3.1
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -26,10 +26,6 @@ Name: %{name}
 Version: %{version}
 Release: %{release}
 Source0: http://banshee-project.org/files/banshee/%{oname}-%{version}.tar.bz2
-#gw from Suse, allow build with mono 1.2.5
-Patch: gmcs-1.2.5-workarounds.patch
-#gw from Suse, fix a crash
-Patch1: now-playing-cover-art-crash.patch
 License: MIT
 Group: Sound
 Url: http://banshee-project.org/
@@ -90,7 +86,7 @@ create audio and MP3 CDs from subsets of your library.
 Group: Sound
 Summary: Ipod support for Banshee
 Requires: %name = %version
-Buildrequires: ipod-sharp >= 0.6.3
+Buildrequires: ipod-sharp >= 0.8.1
 
 %description ipod
 With Banshee you can easily import, manage, and play selections from
@@ -167,8 +163,6 @@ Monodoc format.
 
 %prep
 %setup -q -n %oname-%version
-%patch0
-%patch1
 
 
 %build
@@ -184,7 +178,10 @@ rm -rf $RPM_BUILD_ROOT %oname.lang
 %makeinstall_std MONO=true
 %find_lang %oname
 ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/
-rm -f %buildroot%_libdir/%oname/Extensions/ipod-sharp*
+%if %build_karma
+ln -sf %_prefix/lib/karma-sharp/karma-sharp.dll %buildroot%_libdir/%oname/
+%endif
+rm -f %buildroot%_libdir/%oname/Extensions/{ipod-sharp*,karma-sharp*}
 
 rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a
 
@@ -279,7 +276,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %build_karma
 %files karma
 %defattr(-,root,root)
-%_libdir/%oname/Banshee.Dap/Banshee.Dap.Karma*
-%_libdir/%oname/Banshee.Dap/karma-sharp*
+%_libdir/%oname/Extensions/Banshee.Dap.Karma.dll*
+%_libdir/%oname/karma-sharp.dll
 %endif
 
