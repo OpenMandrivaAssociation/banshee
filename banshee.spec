@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.3.2
-%define release %mkrel 3
+%define version 1.3.3
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -243,7 +243,6 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/Lastfm*.dll*
 %_libdir/%oname/Migo.dll*
 %_libdir/%oname/Mono*.dll*
-%_libdir/%oname/Mtp.dll*
 %_libdir/%oname/MusicBrainz.dll*
 %_libdir/%oname/*.so
 %_libdir/%oname/gstreamer-0.10/
@@ -276,6 +275,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %build_mtp
 %files mtp
 %defattr(-,root,root)
+%_libdir/%oname/Mtp.dll*
 %_libdir/%oname/Extensions/Banshee.Dap.Mtp.dll*
 %endif
 
