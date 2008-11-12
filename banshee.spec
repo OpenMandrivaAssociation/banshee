@@ -1,5 +1,5 @@
 %define name banshee
-%define version 1.4.0.1
+%define version 1.4.1
 %define release %mkrel 1
 %define oname banshee-1
 
