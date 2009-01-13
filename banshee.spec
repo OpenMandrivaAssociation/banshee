@@ -168,8 +168,10 @@ Monodoc format.
 %build
 %configure2_5x  --enable-external-ndesk-dbus \
  --enable-mtp \
- --enable-karma \
- --with-gstreamer-0-10 
+ --with-gstreamer-0-10 \
+%if %build_karma
+ --enable-karma
+%endif
 
 make
 
@@ -177,11 +179,10 @@ make
 rm -rf $RPM_BUILD_ROOT %oname.lang
 %makeinstall_std MONO=true
 %find_lang %oname
-ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/
+ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/Extensions/
 %if %build_karma
-ln -sf %_prefix/lib/karma-sharp/karma-sharp.dll %buildroot%_libdir/%oname/
+ln -sf %_prefix/lib/karma-sharp/karma-sharp.dll %buildroot%_libdir/%oname/Extensions/
 %endif
-rm -f %buildroot%_libdir/%oname/Extensions/{ipod-sharp*,karma-sharp*}
 
 rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a
 
@@ -263,7 +264,7 @@ rm -rf $RPM_BUILD_ROOT
 %files ipod
 %defattr(-,root,root)
 %_libdir/%oname/Extensions/Banshee.Dap.Ipod.dll*
-%_libdir/%oname/ipod-sharp*
+%_libdir/%oname/Extensions/ipod-sharp*
 %endif
 
 %if %build_njb
@@ -283,6 +284,6 @@ rm -rf $RPM_BUILD_ROOT
 %files karma
 %defattr(-,root,root)
 %_libdir/%oname/Extensions/Banshee.Dap.Karma.dll*
-%_libdir/%oname/karma-sharp.dll
+%_libdir/%oname/Extensions/karma-sharp.dll
 %endif
 
