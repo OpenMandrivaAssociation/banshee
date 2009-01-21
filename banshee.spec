@@ -1,5 +1,5 @@
 %define name banshee
-%define version 1.4.1
+%define version 1.4.2
 %define release %mkrel 1
 %define oname banshee-1
 
@@ -252,7 +252,9 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/pkgconfig/%{oname}*.pc
 %_datadir/%oname/
 %_datadir/dbus-1/services/*
-%_datadir/applications/%oname.desktop
+%_datadir/applications/%{oname}.desktop
+%_datadir/applications/%{oname}-audiocd.desktop
+%_datadir/applications/%{oname}-media-player.desktop
 %_datadir/icons/hicolor/*/apps/*
 
 %files doc
