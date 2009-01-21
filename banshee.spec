@@ -184,7 +184,7 @@ ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libd
 ln -sf %_prefix/lib/karma-sharp/karma-sharp.dll %buildroot%_libdir/%oname/Extensions/
 %endif
 
-rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a
+rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a %buildroot%_libdir/%oname/Backends/*.a
 
 #gw fix paths in pkgconfig files
 perl -pi -e "s^/lib$^/%_lib^" %buildroot%_libdir/pkgconfig/*.pc
