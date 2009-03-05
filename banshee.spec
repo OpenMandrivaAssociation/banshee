@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.4.2
-%define release %mkrel 3
+%define version 1.4.3
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -166,7 +166,8 @@ Monodoc format.
 
 
 %build
-%configure2_5x  --enable-external-ndesk-dbus \
+%configure2_5x  --with-vendor-build-id="Mandriva Linux %mandriva_release"  \
+ --enable-external-ndesk-dbus \
  --enable-mtp \
  --with-gstreamer-0-10 \
 %if %build_karma
