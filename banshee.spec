@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.5.0
-%define release %mkrel 1
+%define release %mkrel 2
 %define oname banshee-1
 
 %define build_ipod 1
@@ -52,7 +52,7 @@ Buildrequires: ndesk-dbus-glib
 Buildrequires: taglib-sharp
 Buildrequires: notify-sharp
 Buildrequires: libmtp-devel >= 0.2.1
-#Buildrequires: clutter-devel >= 0.9.3-0.20090602
+Buildrequires: clutter-devel >= 0.9.3-0.20090602
 Buildrequires: ipod-sharp
 %if %build_boo
 Buildrequires: boo
