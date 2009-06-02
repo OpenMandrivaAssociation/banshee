@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.4.3
-%define release %mkrel 2
+%define version 1.5.0
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -25,7 +25,7 @@ Summary: Music player with mobile player support
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: http://banshee-project.org/files/banshee/%{oname}-%{version}.tar.bz2
+Source0: http://banshee-project.org/files/banshee/unstable/%version/%{oname}-%{version}.tar.bz2
 License: MIT
 Group: Sound
 Url: http://banshee-project.org/
@@ -52,6 +52,7 @@ Buildrequires: ndesk-dbus-glib
 Buildrequires: taglib-sharp
 Buildrequires: notify-sharp
 Buildrequires: libmtp-devel >= 0.2.1
+#Buildrequires: clutter-devel >= 0.9.3-0.20090602
 Buildrequires: ipod-sharp
 %if %build_boo
 Buildrequires: boo
@@ -224,6 +225,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %build_boo
 %_libdir/%oname/Extensions/Banshee.BooScript.dll*
 %endif
+%_libdir/%oname/Extensions/Banshee.Bpm.dll*
 %_libdir/%oname/Extensions/Banshee.CoverArt.dll*
 %_libdir/%oname/Extensions/Banshee.Daap.dll*
 %_libdir/%oname/Extensions/Banshee.Dap.MassStorage.dll*
@@ -235,6 +237,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/Extensions/Banshee.MultimediaKeys.dll*
 %_libdir/%oname/Extensions/Banshee.NotificationArea.dll*
 %_libdir/%oname/Extensions/Banshee.NowPlaying.dll*
+%_libdir/%oname/Extensions/Banshee.PlayerMigration.dll*
 %_libdir/%oname/Extensions/Banshee.PlayQueue.dll*
 %_libdir/%oname/Extensions/Banshee.Podcasting.dll*
 %_libdir/%oname/*.exe*
