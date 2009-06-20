@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.5.0
-%define release %mkrel 2
+%define release %mkrel 3
 %define oname banshee-1
 
 %define build_ipod 1
@@ -26,6 +26,7 @@ Name: %{name}
 Version: %{version}
 Release: %{release}
 Source0: http://banshee-project.org/files/banshee/unstable/%version/%{oname}-%{version}.tar.bz2
+Patch: banshee-clutter-0.9.3.patch
 License: MIT
 Group: Sound
 Url: http://banshee-project.org/
@@ -164,6 +165,7 @@ Monodoc format.
 
 %prep
 %setup -q -n %oname-%version
+%patch -p1
 
 
 %build
