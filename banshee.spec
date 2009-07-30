@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.5.0
-%define release %mkrel 4
+%define release %mkrel 5
 %define oname banshee-1
 
 %define build_ipod 1
@@ -27,6 +27,7 @@ Version: %{version}
 Release: %{release}
 Source0: http://banshee-project.org/files/banshee/unstable/%version/%{oname}-%{version}.tar.bz2
 Patch: banshee-clutter-0.9.3.patch
+Patch1: banshee-1-1.5.0-clutter1.0.patch
 License: MIT
 Group: Sound
 Url: http://banshee-project.org/
@@ -53,7 +54,7 @@ Buildrequires: ndesk-dbus-glib
 Buildrequires: taglib-sharp
 Buildrequires: notify-sharp
 Buildrequires: libmtp-devel >= 0.2.1
-Buildrequires: clutter-devel >= 0.9.3-0.20090602
+Buildrequires: clutter-gtk-devel >= 0.10
 Buildrequires: ipod-sharp
 %if %build_boo
 Buildrequires: boo
@@ -166,7 +167,9 @@ Monodoc format.
 %prep
 %setup -q -n %oname-%version
 %patch -p1
-
+%patch1 -p1
+aclocal -I build/m4/banshee -I build/m4/shamrock -I build/m4/shave
+autoconf
 
 %build
 %configure2_5x  --with-vendor-build-id="Mandriva Linux %mandriva_release"  \
