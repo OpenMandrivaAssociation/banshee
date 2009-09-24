@@ -8,7 +8,7 @@
 %define build_mtp 1
 %define build_karma 1
 %define build_boo 1
-
+%define build_clutter 1
 
 %{?_without_ipod: %{expand: %%global build_ipod 0}}
 %{?_without_njb: %{expand: %%global build_njb 0}}
@@ -19,7 +19,14 @@
 %{?_with_karma: %{expand: %%global build_karma 1}}
 %{?_without_boo: %{expand: %%global build_boo 0}}
 %{?_with_boo: %{expand: %%global build_boo 1}}
+%{?_without_clutter: %{expand: %%global build_clutter 0}}
+%{?_with_clutter: %{expand: %%global build_clutter 1}}
 
+
+%if %mdvver < 201000
+%define build_karma 0
+%define build_clutter 0
+%endif
 
 Summary: Music player with mobile player support
 Name: %{name}
@@ -54,7 +61,9 @@ Buildrequires: ndesk-dbus-glib
 Buildrequires: taglib-sharp
 Buildrequires: notify-sharp
 Buildrequires: libmtp-devel >= 0.2.1
+%if %build_clutter
 Buildrequires: clutter-gtk-devel >= 0.10
+%endif
 Buildrequires: ipod-sharp
 %if %build_boo
 Buildrequires: boo
