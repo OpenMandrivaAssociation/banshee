@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.5.0
-%define release %mkrel 6
+%define version 1.5.1
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -31,9 +31,9 @@ Summary: Music player with mobile player support
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: http://banshee-project.org/files/banshee/unstable/%version/%{oname}-%{version}.tar.bz2
-Patch: banshee-clutter-0.9.3.patch
-Patch1: banshee-1-1.5.0-clutter1.0.patch
+Source0: http://banshee-project.org/files/banshee/stable/%version/%{oname}-%{version}.tar.bz2
+#https://bugzilla.gnome.org/show_bug.cgi?id=598415
+Patch1: banshee-1-1.5.1-clutter1.0.patch
 License: MIT
 Group: Sound
 Url: http://banshee-project.org/
@@ -174,10 +174,10 @@ Monodoc format.
 
 %prep
 %setup -q -n %oname-%version
-%patch -p1
-%patch1 -p1
-aclocal -I build/m4/banshee -I build/m4/shamrock -I build/m4/shave
-autoconf
+%patch1 -p1 -b .clutter1.0
+
+#aclocal -I build/m4/banshee -I build/m4/shamrock -I build/m4/shave
+#autoconf
 
 %build
 %configure2_5x  --with-vendor-build-id="Mandriva Linux %mandriva_release"  \
@@ -230,6 +230,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc NEWS README ChangeLog AUTHORS
 %_bindir/%oname
+%_bindir/muinshee
 %dir %_libdir/%oname/
 %_libdir/%oname/Backends
 %dir %_libdir/%oname/Extensions
