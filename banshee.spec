@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.5.1
-%define release %mkrel 2
+%define release %mkrel 3
 %define oname banshee-1
 
 %define build_ipod 1
@@ -33,7 +33,7 @@ Version: %{version}
 Release: %{release}
 Source0: http://banshee-project.org/files/banshee/stable/%version/%{oname}-%{version}.tar.bz2
 #https://bugzilla.gnome.org/show_bug.cgi?id=598415
-Patch1: banshee-1-1.5.1-clutter1.0.patch
+Patch: banshee-1-1.5.1-remove-obsolete-config-files.patch
 License: MIT
 Group: Sound
 Url: http://banshee-project.org/
@@ -61,7 +61,7 @@ Buildrequires: taglib-sharp
 Buildrequires: notify-sharp
 Buildrequires: libmtp-devel >= 0.2.1
 %if %build_clutter
-Buildrequires: clutter-gtk-devel >= 0.10
+Buildrequires: clutter-devel >= 1.0
 %endif
 Buildrequires: ipod-sharp
 %if %build_boo
@@ -174,10 +174,11 @@ Monodoc format.
 
 %prep
 %setup -q -n %oname-%version
-%patch1 -p1 -b .clutter1.0
+%patch -p1
 
-#aclocal -I build/m4/banshee -I build/m4/shamrock -I build/m4/shave
-#autoconf
+aclocal -I build/m4/banshee -I build/m4/shamrock -I build/m4/shave
+autoconf
+automake
 
 %build
 %configure2_5x  --with-vendor-build-id="Mandriva Linux %mandriva_release"  \
