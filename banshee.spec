@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.5.1
-%define release %mkrel 3
+%define version 1.5.2
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -33,7 +33,6 @@ Version: %{version}
 Release: %{release}
 Source0: http://banshee-project.org/files/banshee/stable/%version/%{oname}-%{version}.tar.bz2
 #https://bugzilla.gnome.org/show_bug.cgi?id=598415
-Patch: banshee-1-1.5.1-remove-obsolete-config-files.patch
 License: MIT
 Group: Sound
 Url: http://banshee-project.org/
@@ -63,7 +62,7 @@ Buildrequires: libmtp-devel >= 0.2.1
 %if %build_clutter
 Buildrequires: clutter-devel >= 1.0
 %endif
-Buildrequires: ipod-sharp
+Buildrequires: ipod-sharp >= 0.8.5
 %if %build_boo
 Buildrequires: boo
 %endif
@@ -174,11 +173,6 @@ Monodoc format.
 
 %prep
 %setup -q -n %oname-%version
-%patch -p1
-
-aclocal -I build/m4/banshee -I build/m4/shamrock -I build/m4/shave
-autoconf
-automake
 
 %build
 %configure2_5x  --with-vendor-build-id="Mandriva Linux %mandriva_release"  \
@@ -246,6 +240,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/Extensions/Banshee.Dap.MassStorage.dll*
 %_libdir/%oname/Extensions/Banshee.Dap.dll*
 %_libdir/%oname/Extensions/Banshee.FileSystemQueue.dll*
+%_libdir/%oname/Extensions/Banshee.InternetArchive.dll*
 %_libdir/%oname/Extensions/Banshee.InternetRadio.dll*
 %_libdir/%oname/Extensions/Banshee.Lastfm.dll*
 %_libdir/%oname/Extensions/Banshee.MiniMode.dll*
