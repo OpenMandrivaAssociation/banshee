@@ -1,5 +1,5 @@
 %define name banshee
-%define version 1.5.2
+%define version 1.5.3
 %define release %mkrel 1
 %define oname banshee-1
 
@@ -229,6 +229,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %_libdir/%oname/
 %_libdir/%oname/Backends
 %dir %_libdir/%oname/Extensions
+%_libdir/%oname/Extensions/Banshee.Audiobook.dll*
 %_libdir/%oname/Extensions/Banshee.AudioCd.dll*
 %_libdir/%oname/Extensions/Banshee.Bookmarks.dll*
 %if %build_boo
@@ -239,10 +240,12 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/Extensions/Banshee.Daap.dll*
 %_libdir/%oname/Extensions/Banshee.Dap.MassStorage.dll*
 %_libdir/%oname/Extensions/Banshee.Dap.dll*
+%_libdir/%oname/Extensions/Banshee.Emusic.dll*
 %_libdir/%oname/Extensions/Banshee.FileSystemQueue.dll*
 %_libdir/%oname/Extensions/Banshee.InternetArchive.dll*
 %_libdir/%oname/Extensions/Banshee.InternetRadio.dll*
 %_libdir/%oname/Extensions/Banshee.Lastfm.dll*
+%_libdir/%oname/Extensions/Banshee.LibraryWatcher.dll*
 %_libdir/%oname/Extensions/Banshee.MiniMode.dll*
 %_libdir/%oname/Extensions/Banshee.MultimediaKeys.dll*
 %_libdir/%oname/Extensions/Banshee.NotificationArea.dll*
