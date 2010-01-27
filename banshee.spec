@@ -178,7 +178,10 @@ Monodoc format.
 %configure2_5x  --with-vendor-build-id="Mandriva Linux %mandriva_release"  \
  --enable-mtp \
 %if %build_karma
- --enable-karma
+ --enable-karma \
+%endif
+%if %build_clutter
+ --enable-clutter \
 %endif
 
 make
