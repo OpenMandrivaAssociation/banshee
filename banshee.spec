@@ -62,6 +62,9 @@ Buildrequires: libmtp-devel >= 0.2.1
 %if %build_clutter
 Buildrequires: clutter-devel >= 1.0
 %endif
+#gw not yet packaged:
+#BuildRequires: gio-sharp
+#BuildRequires: gtk-sharp-beans
 Buildrequires: ipod-sharp >= 0.8.5
 %if %build_boo
 Buildrequires: boo
