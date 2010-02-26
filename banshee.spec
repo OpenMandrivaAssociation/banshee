@@ -63,7 +63,7 @@ BuildRequires: gstreamer0.10-gnomevfs
 BuildRequires: gstreamer0.10-plugins-good
 Buildrequires: gnome-desktop-devel
 Buildrequires: ndesk-dbus-glib
-Buildrequires: taglib-sharp
+Buildrequires: taglib-sharp >= 2.0.3.5
 Buildrequires: notify-sharp
 Buildrequires: libmtp-devel >= 0.2.1
 %if %build_clutter
