@@ -72,7 +72,6 @@ Buildrequires: clutter-devel >= 1.0
 #gw not yet packaged:
 #BuildRequires: gio-sharp
 #BuildRequires: gtk-sharp-beans
-Buildrequires: ipod-sharp >= 0.8.5
 %if %build_boo
 Buildrequires: boo
 %endif
@@ -106,7 +105,8 @@ create audio and MP3 CDs from subsets of your library.
 Group: Sound
 Summary: Ipod support for Banshee
 Requires: %name = %version
-Buildrequires: ipod-sharp >= 0.8.1
+Buildrequires: ipod-sharp >= 0.8.5
+Requires: ipod-sharp >= 0.8.5
 
 %description ipod
 With Banshee you can easily import, manage, and play selections from
