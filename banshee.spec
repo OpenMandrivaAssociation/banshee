@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.5.3
-%define release %mkrel 2
+%define version 1.5.4
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -8,7 +8,13 @@
 %define build_mtp 1
 %define build_karma 1
 %define build_boo 1
+#gw does not build with clutter 1.1.12:
+#https://bugzilla.gnome.org/show_bug.cgi?id=611153
+%define build_clutter 0
+
+%if %mdvver == 201000
 %define build_clutter 1
+%endif
 
 %if %mdvver < 201000
 %define build_karma 0
@@ -45,6 +51,7 @@ Buildrequires: gnome-sharp2
 %else
 Buildrequires: gnome-sharp2-devel
 %endif
+Buildrequires: webkit-sharp-devel
 Buildrequires: sqlite3-devel
 Buildrequires: libgstreamer-plugins-base-devel
 Buildrequires: libxrandr-devel libxxf86vm-devel
@@ -259,6 +266,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/Extensions/Banshee.PlayerMigration.dll*
 %_libdir/%oname/Extensions/Banshee.PlayQueue.dll*
 %_libdir/%oname/Extensions/Banshee.Podcasting.dll*
+%_libdir/%oname/Extensions/Banshee.Wikipedia.dll*
 %_libdir/%oname/*.exe*
 %_libdir/%oname/Banshee*.dll*
 %_libdir/%oname/Hyena*.dll*
