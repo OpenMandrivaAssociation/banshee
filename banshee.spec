@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.5.4
-%define release %mkrel 1
+%define release %mkrel 2
 %define oname banshee-1
 
 %define build_ipod 1
@@ -38,7 +38,8 @@ Name: %{name}
 Version: %{version}
 Release: %{release}
 Source0: http://banshee-project.org/files/banshee/stable/%version/%{oname}-%{version}.tar.bz2
-#https://bugzilla.gnome.org/show_bug.cgi?id=598415
+# https://bugzilla.gnome.org/show_bug.cgi?id=588255
+Patch0: banshee-make-notification-icon-transparent.patch
 License: MIT
 Group: Sound
 Url: http://banshee-project.org/
@@ -183,6 +184,7 @@ Monodoc format.
 
 %prep
 %setup -q -n %oname-%version
+%apply_patches
 
 %build
 %configure2_5x  --with-vendor-build-id="Mandriva Linux %mandriva_release"  \
