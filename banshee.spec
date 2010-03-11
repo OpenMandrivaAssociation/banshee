@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.5.4
-%define release %mkrel 2
+%define version 1.5.5
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -53,6 +53,7 @@ Buildrequires: gnome-sharp2
 Buildrequires: gnome-sharp2-devel
 %endif
 Buildrequires: webkit-sharp-devel
+Buildrequires: libgoogle-data-mono-devel
 Buildrequires: sqlite3-devel
 Buildrequires: libgstreamer-plugins-base-devel
 Buildrequires: libxrandr-devel libxxf86vm-devel
