@@ -1,5 +1,5 @@
 %define name banshee
-%define version 1.5.5
+%define version 1.5.6
 %define release %mkrel 1
 %define oname banshee-1
 
@@ -65,7 +65,7 @@ BuildRequires: gstreamer0.10-gnomevfs
 BuildRequires: gstreamer0.10-plugins-good
 Buildrequires: gnome-desktop-devel
 Buildrequires: ndesk-dbus-glib
-Buildrequires: taglib-sharp >= 2.0.3.5
+Buildrequires: taglib-sharp >= 2.0.3.7
 Buildrequires: notify-sharp
 Buildrequires: libmtp-devel >= 0.2.1
 %if %build_clutter
