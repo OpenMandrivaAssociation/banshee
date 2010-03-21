@@ -270,6 +270,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/Extensions/Banshee.PlayQueue.dll*
 %_libdir/%oname/Extensions/Banshee.Podcasting.dll*
 %_libdir/%oname/Extensions/Banshee.Wikipedia.dll*
+%_libdir/%oname/Extensions/Banshee.YouTube.dll*
 %_libdir/%oname/*.exe*
 %_libdir/%oname/Banshee*.dll*
 %_libdir/%oname/Hyena*.dll*
