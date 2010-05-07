@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.6.0
-%define release %mkrel 3
+%define release %mkrel 4
 %define oname banshee-1
 
 %define build_ipod 1
@@ -214,8 +214,8 @@ rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a
 perl -pi -e "s^/lib$^/%_lib^" %buildroot%_libdir/pkgconfig/*.pc
 
 #(nl) KDE Solid integration
-mkdir -p %buildroot/%_datadir/apps/solid
-install -D -m 644 %{SOURCE1} $RPM_BUILD_ROOT%_datadir/apps/solid
+mkdir -p %buildroot/%_datadir/apps/solid/actions/
+install -D -m 644 %{SOURCE1} $RPM_BUILD_ROOT%_datadir/apps/solid/actions/
 
 %if %mdkversion < 200900
 %post
@@ -293,7 +293,7 @@ rm -rf $RPM_BUILD_ROOT
 %_datadir/applications/%{oname}-audiocd.desktop
 %_datadir/applications/%{oname}-media-player.desktop
 %_datadir/icons/hicolor/*/apps/*
-%_datadir/apps/solid/banshee-play-audiocd.desktop
+%_datadir/apps/solid/actions/banshee-play-audiocd.desktop
 
 %files doc
 %defattr(-,root,root)
