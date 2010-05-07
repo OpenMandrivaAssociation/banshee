@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.6.0
-%define release %mkrel 2
+%define release %mkrel 3
 %define oname banshee-1
 
 %define build_ipod 1
@@ -38,6 +38,8 @@ Name: %{name}
 Version: %{version}
 Release: %{release}
 Source0: http://banshee-project.org/files/banshee/stable/%version/%{oname}-%{version}.tar.bz2
+#(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
+Source1: banshee-play-audiocd.desktop
 License: MIT
 Group: Sound
 Url: http://banshee-project.org/
@@ -211,6 +213,10 @@ rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a
 #gw fix paths in pkgconfig files
 perl -pi -e "s^/lib$^/%_lib^" %buildroot%_libdir/pkgconfig/*.pc
 
+#(nl) KDE Solid integration
+mkdir -p %buildroot/%_datadir/apps/solid
+install -D -m 644 %{SOURCE1} $RPM_BUILD_ROOT%_datadir/apps/solid
+
 %if %mdkversion < 200900
 %post
 %{update_menus}
@@ -287,6 +293,7 @@ rm -rf $RPM_BUILD_ROOT
 %_datadir/applications/%{oname}-audiocd.desktop
 %_datadir/applications/%{oname}-media-player.desktop
 %_datadir/icons/hicolor/*/apps/*
+%_datadir/apps/solid/banshee-play-audiocd.desktop
 
 %files doc
 %defattr(-,root,root)
