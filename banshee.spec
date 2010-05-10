@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.6.0
-%define release %mkrel 4
+%define release %mkrel 5
 %define oname banshee-1
 
 %define build_ipod 1
