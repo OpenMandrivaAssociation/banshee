@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.6.0
-%define release %mkrel 6
+%define version 1.6.1
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -37,12 +37,12 @@ Summary: Music player with mobile player support
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: http://banshee-project.org/files/banshee/stable/%version/%{oname}-%{version}.tar.bz2
+Source0: http://banshee.fm/files/banshee/stable/%version/%{oname}-%{version}.tar.bz2
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
 License: MIT
 Group: Sound
-Url: http://banshee-project.org/
+Url: http://banshee.fm
 BuildRoot: %{_tmppath}/%{oname}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel
 Buildrequires: mono-zeroconf
