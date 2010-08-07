@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.6.1
-%define release %mkrel 2
+%define version 1.7.3
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_ipod 1
@@ -11,9 +11,14 @@
 #gw does not build with clutter 1.1.12:
 #https://bugzilla.gnome.org/show_bug.cgi?id=611153
 %define build_clutter 0
+%define build_webkit 1
 
 %if %mdvver == 201000
 %define build_clutter 1
+%endif
+
+%if %mdvver < 201100
+%define build_webkit 0
 %endif
 
 %if %mdvver < 201000
@@ -40,6 +45,8 @@ Release: %{release}
 Source0: http://banshee.fm/files/banshee/stable/%version/%{oname}-%{version}.tar.bz2
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
+Patch0: banshee-fix-configure.patch
+Patch1: banshee-1-1.7.3-fix-makefile.patch
 License: MIT
 Group: Sound
 Url: http://banshee.fm
@@ -53,6 +60,9 @@ Buildrequires: gnome-sharp2
 Buildrequires: gnome-sharp2-devel
 %endif
 Buildrequires: webkit-sharp-devel
+%if %build_webkit
+Buildrequires: webkitgtk-devel >= 1.2.2
+%endif
 Buildrequires: libgoogle-data-mono-devel
 Buildrequires: sqlite3-devel
 Buildrequires: libgstreamer-plugins-base-devel
@@ -73,6 +83,8 @@ Buildrequires: clutter-devel >= 1.0
 %endif
 BuildRequires: gio-sharp-devel
 BuildRequires: gtk-sharp-beans-devel
+#gw not yet packaged:
+#BuildRequires: clutter-sharp
 %if %build_boo
 Buildrequires: boo
 %endif
@@ -182,9 +194,21 @@ Obsoletes: banshee-1-doc
 This package contains the API documentation for the %name in
 Monodoc format.
 
+%package devel
+Group: Development/Other
+Requires: %name = %version-%release
+Summary: Development parts of %name
+
+%description devel
+This package contains the pkg-config files needed for building Banshee
+extensions.
+
 %prep
 %setup -q -n %oname-%version
 %apply_patches
+aclocal -I build/m4 -I build/m4/shave -I build/m4/banshee -I build/m4/shamrock
+autoconf
+automake
 
 %build
 %configure2_5x  --with-vendor-build-id="Mandriva Linux %mandriva_release"  \
@@ -199,9 +223,11 @@ Monodoc format.
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT %oname.lang
+rm -rf $RPM_BUILD_ROOT *.lang
 %makeinstall_std MONO=true
 %find_lang %oname
+%find_lang %name  --with-gnome
+cat %name.lang >> %oname.lang
 ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/Extensions/
 %if %build_karma
 ln -sf %_prefix/lib/karma-sharp/karma-sharp.dll %buildroot%_libdir/%oname/Extensions/
@@ -216,19 +242,9 @@ perl -pi -e "s^/lib$^/%_lib^" %buildroot%_libdir/pkgconfig/*.pc
 mkdir -p %buildroot/%_datadir/apps/solid/actions/
 install -D -m 644 %{SOURCE1} $RPM_BUILD_ROOT%_datadir/apps/solid/actions/
 
-%if %mdkversion < 200900
-%post
-%{update_menus}
-%update_icon_cache hicolor
-%update_desktop_database
-%endif
-
-%if %mdkversion < 200900
-%postun
-%{clean_menus}
-%clean_icon_cache hicolor
-%clean_desktop_database
-%endif
+#gw: generated at installation time
+rm -rf %buildroot%_datadir/{applications/mimeinfo.cache,\
+mime/{XMLnamespaces,a*,g*,icons,m*,subclasses,t*}}
 
 %post doc
 %_bindir/monodoc --make-index > /dev/null
@@ -243,17 +259,26 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %oname.lang
 %defattr(-,root,root)
 %doc NEWS README ChangeLog AUTHORS
+%_bindir/bamz
 %_bindir/%oname
 %_bindir/muinshee
 %dir %_libdir/%oname/
-%_libdir/%oname/Backends
+%dir %_libdir/%oname/Backends
+%_libdir/%oname/Backends/Banshee.GStreamer.*
+%_libdir/%oname/Backends/Banshee.Gio.*
+%_libdir/%oname/Backends/Banshee.Gnome.*
+%_libdir/%oname/Backends/Banshee.Hal.*
+%_libdir/%oname/Backends/Banshee.NowPlaying.X11.*
+%_libdir/%oname/Backends/Banshee.Unix.*
+%_libdir/%oname/Backends/libbnpx11.la
+%_libdir/%oname/Backends/libbnpx11.so
 %dir %_libdir/%oname/Extensions
 %_libdir/%oname/Extensions/Banshee.Audiobook.dll*
 %_libdir/%oname/Extensions/Banshee.AudioCd.dll*
-%_libdir/%oname/Extensions/Banshee.Bookmarks.dll*
 %if %build_boo
 %_libdir/%oname/Extensions/Banshee.BooScript.dll*
 %endif
+%_libdir/%oname/Extensions/Banshee.AmazonMp3.exe*
 %_libdir/%oname/Extensions/Banshee.Bpm.dll*
 %_libdir/%oname/Extensions/Banshee.CoverArt.dll*
 %_libdir/%oname/Extensions/Banshee.Daap.dll*
@@ -261,9 +286,11 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/Extensions/Banshee.Dap.dll*
 %_libdir/%oname/Extensions/Banshee.Emusic.dll*
 %_libdir/%oname/Extensions/Banshee.FileSystemQueue.dll*
+%_libdir/%oname/Extensions/Banshee.Fixup.dll*
 %_libdir/%oname/Extensions/Banshee.InternetArchive.dll*
 %_libdir/%oname/Extensions/Banshee.InternetRadio.dll*
 %_libdir/%oname/Extensions/Banshee.Lastfm.dll*
+%_libdir/%oname/Extensions/Banshee.LastfmStreaming.dll*
 %_libdir/%oname/Extensions/Banshee.LibraryWatcher.dll*
 %_libdir/%oname/Extensions/Banshee.MiniMode.dll*
 %_libdir/%oname/Extensions/Banshee.MultimediaKeys.dll*
@@ -272,8 +299,12 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/Extensions/Banshee.PlayerMigration.dll*
 %_libdir/%oname/Extensions/Banshee.PlayQueue.dll*
 %_libdir/%oname/Extensions/Banshee.Podcasting.dll*
-%_libdir/%oname/Extensions/Banshee.Wikipedia.dll*
 %_libdir/%oname/Extensions/Banshee.YouTube.dll*
+%if %build_webkit
+%_libdir/%oname/Extensions/Banshee.AmazonMp3.Store.dll*
+%_libdir/%oname/Extensions/Banshee.MiroGuide.dll*
+%_libdir/%oname/Extensions/Banshee.Wikipedia.dll*
+%endif
 %_libdir/%oname/*.exe*
 %_libdir/%oname/Banshee*.dll*
 %_libdir/%oname/Hyena*.dll*
@@ -285,7 +316,6 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/gstreamer-0.10/
 %_libdir/%oname/Banshee.Services.addins
 %attr(644,root,root) %_libdir/%oname/*.la
-%_libdir/pkgconfig/%{oname}*.pc
 %_datadir/%oname/
 %_datadir/dbus-1/services/*
 %_datadir/applications/%{oname}.desktop
@@ -293,6 +323,11 @@ rm -rf $RPM_BUILD_ROOT
 %_datadir/applications/%{oname}-media-player.desktop
 %_datadir/icons/hicolor/*/apps/*
 %_datadir/apps/solid/actions/banshee-play-audiocd.desktop
+%_datadir/mime/packages/amazonmp3.xml
+
+%files devel
+%defattr(-,root,root)
+%_libdir/pkgconfig/%{oname}*.pc
 
 %files doc
 %defattr(-,root,root)
