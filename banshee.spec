@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.6.1
-%define release %mkrel 1
+%define release %mkrel 2
 %define oname banshee-1
 
 %define build_ipod 1
@@ -71,9 +71,8 @@ Buildrequires: libmtp-devel >= 0.2.1
 %if %build_clutter
 Buildrequires: clutter-devel >= 1.0
 %endif
-#gw not yet packaged:
-#BuildRequires: gio-sharp
-#BuildRequires: gtk-sharp-beans
+BuildRequires: gio-sharp-devel
+BuildRequires: gtk-sharp-beans-devel
 %if %build_boo
 Buildrequires: boo
 %endif
