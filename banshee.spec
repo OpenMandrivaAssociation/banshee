@@ -118,7 +118,7 @@ create audio and MP3 CDs from subsets of your library.
 Group: Sound
 Summary: Ipod support for Banshee
 Requires: %name = %version
-Buildrequires: ipod-sharp >= 0.8.5
+Buildrequires: ipod-sharp-devel >= 0.8.5
 Requires: ipod-sharp >= 0.8.5
 
 %description ipod
