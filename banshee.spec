@@ -67,7 +67,7 @@ BuildRequires: gstreamer0.10-cdparanoia
 BuildRequires: gstreamer0.10-gnomevfs
 BuildRequires: gstreamer0.10-plugins-good
 Buildrequires: gnome-desktop-devel
-Buildrequires: ndesk-dbus-glib
+Buildrequires: ndesk-dbus-glib-devel
 Buildrequires: taglib-sharp-devel >= 2.0.3.7
 Buildrequires: notify-sharp
 Buildrequires: libmtp-devel >= 0.2.1
