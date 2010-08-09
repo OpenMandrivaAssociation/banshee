@@ -53,7 +53,7 @@ Url: http://banshee.fm
 BuildRoot: %{_tmppath}/%{oname}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel
 Buildrequires: mono-zeroconf-devel
-Buildrequires: mono-addins
+Buildrequires: mono-addins-devel
 Buildrequires: gnome-sharp2-devel
 Buildrequires: webkit-sharp-devel
 %if %build_webkit
