@@ -52,13 +52,9 @@ Group: Sound
 Url: http://banshee.fm
 BuildRoot: %{_tmppath}/%{oname}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel
-Buildrequires: mono-zeroconf
+Buildrequires: mono-zeroconf-devel
 Buildrequires: mono-addins
-%if %mdvver < 200900
-Buildrequires: gnome-sharp2
-%else
 Buildrequires: gnome-sharp2-devel
-%endif
 Buildrequires: webkit-sharp-devel
 %if %build_webkit
 Buildrequires: webkitgtk-devel >= 1.2.2
@@ -67,9 +63,6 @@ Buildrequires: libgoogle-data-mono-devel
 Buildrequires: sqlite3-devel
 Buildrequires: libgstreamer-plugins-base-devel
 Buildrequires: libxrandr-devel libxxf86vm-devel
-%if %mdvver < 200900
-Buildrequires: libxcb-devel
-%endif
 BuildRequires: gstreamer0.10-cdparanoia
 BuildRequires: gstreamer0.10-gnomevfs
 BuildRequires: gstreamer0.10-plugins-good
