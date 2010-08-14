@@ -1,5 +1,5 @@
 %define name banshee
-%define version 1.7.3
+%define version 1.7.4
 %define release %mkrel 1
 %define oname banshee-1
 
@@ -42,18 +42,28 @@ Summary: Music player with mobile player support
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: http://banshee.fm/files/banshee/stable/%version/%{oname}-%{version}.tar.bz2
+Source0: http://download.banshee.fm/%name/unstable/%version/%name-1-%version.tar.bz2
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
-Patch0: banshee-fix-configure.patch
 Patch1: banshee-1-1.7.3-fix-makefile.patch
 License: MIT
 Group: Sound
 Url: http://banshee.fm
 BuildRoot: %{_tmppath}/%{oname}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel
+%if %mdvver >= 201100
 Buildrequires: mono-zeroconf-devel
 Buildrequires: mono-addins-devel
+Buildrequires: ndesk-dbus-glib-devel
+Buildrequires: taglib-sharp-devel >= 2.0.3.7
+Buildrequires: notify-sharp-devel
+%else
+Buildrequires: mono-zeroconf
+Buildrequires: mono-addins
+Buildrequires: ndesk-dbus-glib
+Buildrequires: taglib-sharp >= 2.0.3.7
+Buildrequires: notify-sharp
+%endif
 Buildrequires: gnome-sharp2-devel
 Buildrequires: webkit-sharp-devel
 %if %build_webkit
@@ -67,9 +77,6 @@ BuildRequires: gstreamer0.10-cdparanoia
 BuildRequires: gstreamer0.10-gnomevfs
 BuildRequires: gstreamer0.10-plugins-good
 Buildrequires: gnome-desktop-devel
-Buildrequires: ndesk-dbus-glib-devel
-Buildrequires: taglib-sharp-devel >= 2.0.3.7
-Buildrequires: notify-sharp-devel
 Buildrequires: libmtp-devel >= 0.2.1
 %if %build_clutter
 Buildrequires: clutter-devel >= 1.0
@@ -111,7 +118,11 @@ create audio and MP3 CDs from subsets of your library.
 Group: Sound
 Summary: Ipod support for Banshee
 Requires: %name = %version
+%if %mdvver >= 201100
 Buildrequires: ipod-sharp-devel >= 0.8.5
+%else
+Buildrequires: ipod-sharp >= 0.8.5
+%endif
 Requires: ipod-sharp >= 0.8.5
 
 %description ipod
@@ -199,6 +210,7 @@ extensions.
 %prep
 %setup -q -n %oname-%version
 %apply_patches
+libtoolize --copy --force
 aclocal -I build/m4 -I build/m4/shave -I build/m4/banshee -I build/m4/shamrock
 autoconf
 automake
@@ -316,7 +328,7 @@ rm -rf $RPM_BUILD_ROOT
 %_datadir/applications/%{oname}-media-player.desktop
 %_datadir/icons/hicolor/*/apps/*
 %_datadir/apps/solid/actions/banshee-play-audiocd.desktop
-%_datadir/mime/packages/amazonmp3.xml
+%_datadir/mime/packages/banshee-amz.xml
 
 %files devel
 %defattr(-,root,root)
