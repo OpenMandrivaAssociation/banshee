@@ -92,6 +92,7 @@ BuildRequires: mono-tools >= 1.1.9
 Buildrequires: librsvg
 Buildrequires: desktop-file-utils
 Buildrequires: gnome-common intltool
+Buildrequires: gnome-doc-utils
 Requires(post): desktop-file-utils
 Requires(postun): desktop-file-utils
 Requires: gstreamer0.10-plugins-base
