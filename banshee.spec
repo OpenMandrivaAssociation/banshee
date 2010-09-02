@@ -1,8 +1,9 @@
 %define name banshee
-%define version 1.7.4
-%define release %mkrel 2
+%define version 1.7.5
+%define release 1
 %define oname banshee-1
 
+%define build_appledevice 1
 %define build_ipod 1
 %define build_njb 0
 %define build_mtp 1
@@ -45,7 +46,6 @@ Release: %{release}
 Source0: http://download.banshee.fm/%name/unstable/%version/%name-1-%version.tar.bz2
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
-Patch1: banshee-1-1.7.3-fix-makefile.patch
 License: MIT
 Group: Sound
 Url: http://banshee.fm
@@ -114,17 +114,24 @@ music collection to an mobile device, play music directly from an
 mobile player, create playlists with songs from your library, and
 create audio and MP3 CDs from subsets of your library.
 
-%if %build_ipod
+%if %build_ipod || %build_appledevice
 %package ipod
 Group: Sound
 Summary: Ipod support for Banshee
 Requires: %name = %version
+%if %build_appledevice
+Buildrequires: gudev-sharp-devel
+Buildrequires: gkeyfile-sharp-devel
+Buildrequires: libgpod-devel >= 0.7.94
+%endif
+%if %build_ipod
 %if %mdvver >= 201100
 Buildrequires: ipod-sharp-devel >= 0.8.5
 %else
 Buildrequires: ipod-sharp >= 0.8.5
 %endif
 Requires: ipod-sharp >= 0.8.5
+%endif
 
 %description ipod
 With Banshee you can easily import, manage, and play selections from
@@ -211,14 +218,20 @@ extensions.
 %prep
 %setup -q -n %oname-%version
 %apply_patches
-libtoolize --copy --force
-aclocal -I build/m4 -I build/m4/shave -I build/m4/banshee -I build/m4/shamrock
-autoconf
-automake
+#libtoolize --copy --force
+#aclocal -I build/m4 -I build/m4/shave -I build/m4/banshee -I build/m4/shamrock
+#autoconf
+#automake
 
 %build
 %configure2_5x  --with-vendor-build-id="Mandriva Linux %mandriva_release"  \
  --enable-mtp \
+%if !%build_appledevice
+ --disable-appledevice \
+%endif
+%if !%build_ipod
+ --disable-ipod \
+%endif
 %if %build_karma
  --enable-karma \
 %endif
@@ -234,7 +247,12 @@ rm -rf $RPM_BUILD_ROOT *.lang
 %find_lang %oname
 %find_lang %name  --with-gnome
 cat %name.lang >> %oname.lang
+%if %build_ipod
 ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/Extensions/
+%endif
+%if %build_appledevice
+ln -sf %_libdir/libgpod/libgpod-sharp.dll* %buildroot%_libdir/%oname/Extensions/
+%endif
 %if %build_karma
 ln -sf %_prefix/lib/karma-sharp/karma-sharp.dll %buildroot%_libdir/%oname/Extensions/
 %endif
@@ -264,7 +282,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %oname.lang
 %defattr(-,root,root)
-%doc NEWS README ChangeLog AUTHORS
+%doc NEWS README AUTHORS
+# ChangeLog
 %_bindir/bamz
 %_bindir/%oname
 %_bindir/muinshee
@@ -299,6 +318,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%oname/Extensions/Banshee.LastfmStreaming.dll*
 %_libdir/%oname/Extensions/Banshee.LibraryWatcher.dll*
 %_libdir/%oname/Extensions/Banshee.MiniMode.dll*
+%_libdir/%oname/Extensions/Banshee.Mpris.dll*
 %_libdir/%oname/Extensions/Banshee.MultimediaKeys.dll*
 %_libdir/%oname/Extensions/Banshee.NotificationArea.dll*
 %_libdir/%oname/Extensions/Banshee.NowPlaying.dll*
@@ -340,11 +360,17 @@ rm -rf $RPM_BUILD_ROOT
 %_prefix/lib/monodoc/sources/banshee-docs*
 %_prefix/lib/monodoc/sources/hyena-docs*
 
-%if %build_ipod
+%if %build_ipod || %build_appledevice
 %files ipod
 %defattr(-,root,root)
+%if %build_ipod
 %_libdir/%oname/Extensions/Banshee.Dap.Ipod.dll*
 %_libdir/%oname/Extensions/ipod-sharp*
+%endif
+%if %build_appledevice
+%_libdir/%oname/Extensions/Banshee.Dap.AppleDevice.dll*
+%_libdir/%oname/Extensions/libgpod-sharp.dll*
+%endif
 %endif
 
 %if %build_njb
