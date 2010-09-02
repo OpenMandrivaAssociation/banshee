@@ -66,6 +66,8 @@ Buildrequires: notify-sharp
 %endif
 Buildrequires: gnome-sharp2-devel
 Buildrequires: webkit-sharp-devel
+Buildrequires: gudev-sharp-devel
+Buildrequires: gkeyfile-sharp-devel
 %if %build_webkit
 Buildrequires: webkitgtk-devel >= 1.2.2
 %endif
@@ -120,8 +122,6 @@ Group: Sound
 Summary: Ipod support for Banshee
 Requires: %name = %version
 %if %build_appledevice
-Buildrequires: gudev-sharp-devel
-Buildrequires: gkeyfile-sharp-devel
 Buildrequires: libgpod-devel >= 0.7.94
 %endif
 %if %build_ipod
