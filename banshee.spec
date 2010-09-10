@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.7.5
-%define release %mkrel 2
+%define release %mkrel 3
 %define oname banshee-1
 
 %define build_appledevice 1
@@ -67,7 +67,7 @@ Buildrequires: notify-sharp
 Buildrequires: gnome-sharp2-devel
 Buildrequires: webkit-sharp-devel
 Buildrequires: gudev-sharp-devel
-Buildrequires: gkeyfile-sharp-devel
+Buildrequires: gkeyfile-sharp-devel >= 0.1-1mdv
 %if %build_webkit
 Buildrequires: webkitgtk-devel >= 1.2.2
 %endif
