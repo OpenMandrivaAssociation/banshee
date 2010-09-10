@@ -1,6 +1,6 @@
 %define name banshee
 %define version 1.7.5
-%define release %mkrel 1
+%define release %mkrel 2
 %define oname banshee-1
 
 %define build_appledevice 1
@@ -18,7 +18,7 @@
 %define build_clutter 1
 %endif
 
-%if %mdvver < 201100
+%if %mdvver < 201010
 %define build_webkit 0
 %endif
 
