@@ -1,5 +1,5 @@
 %define name banshee
-%define version 1.7.6
+%define version 1.8.0
 %define release %mkrel 1
 %define oname banshee-1
 
@@ -43,7 +43,7 @@ Summary: Music player with mobile player support
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: http://download.banshee.fm/%name/unstable/%version/%name-1-%version.tar.bz2
+Source0: http://download.banshee.fm/%name/stable/%version/%name-1-%version.tar.bz2
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
 License: MIT
@@ -122,7 +122,7 @@ Group: Sound
 Summary: Ipod support for Banshee
 Requires: %name = %version
 %if %build_appledevice
-Buildrequires: libgpod-devel >= 0.7.94
+Buildrequires: libgpod-devel >= 0.7.95
 %endif
 %if %build_ipod
 %if %mdvver >= 201100
