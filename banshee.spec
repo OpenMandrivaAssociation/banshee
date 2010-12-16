@@ -107,6 +107,8 @@ Suggests: gstreamer0.10-xing
 Suggests: gstreamer0.10-lame
 Suggests: gstreamer0.10-faac
 Suggests: gstreamer0.10-faad
+#gw for bpm detection:
+Suggests: gstreamer0.10-soundtouch
 Suggests: brasero
 
 %description
