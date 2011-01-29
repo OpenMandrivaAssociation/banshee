@@ -1,6 +1,6 @@
 %define name banshee
-%define version 1.8.0
-%define release %mkrel 3
+%define version 1.8.1
+%define release %mkrel 1
 %define oname banshee-1
 
 %define build_appledevice 1
@@ -393,5 +393,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %_libdir/%oname/Extensions/Banshee.Dap.Karma.dll*
 %_libdir/%oname/Extensions/karma-sharp.dll
+%_libdir/%oname/Extensions/karma-sharp.dll.config
 %endif
 
