@@ -1,7 +1,7 @@
 %define name banshee
-%define version 1.8.1
+%define version 2.0.0
 %define release %mkrel 1
-%define oname banshee-1
+%define oname banshee
 
 %define build_appledevice 1
 %define build_ipod 1
@@ -43,7 +43,7 @@ Summary: Music player with mobile player support
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: http://download.banshee.fm/%name/stable/%version/%name-1-%version.tar.bz2
+Source0: http://download.banshee.fm/%name/stable/%version/%oname-%version.tar.bz2
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
 License: MIT
@@ -218,15 +218,11 @@ This package contains the pkg-config files needed for building Banshee
 extensions.
 
 %prep
-%setup -q -n %oname-%version
+%setup -qn %oname-%version
 %apply_patches
-#libtoolize --copy --force
-#aclocal -I build/m4 -I build/m4/shave -I build/m4/banshee -I build/m4/shamrock
-#autoconf
-#automake
 
 %build
-%configure2_5x  --with-vendor-build-id="Mandriva Linux %mandriva_release"  \
+%configure2_5x  --with-vendor-build-id="%product_distribution %product_version"  \
  --enable-mtp \
 %if !%build_appledevice
  --disable-appledevice \
@@ -246,9 +242,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT *.lang
 %makeinstall_std MONO=true
-%find_lang %oname
-%find_lang %name  --with-gnome
-cat %name.lang >> %oname.lang
+%find_lang %name --all-name --with-gnome
 %if %build_ipod
 ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/Extensions/
 %endif
