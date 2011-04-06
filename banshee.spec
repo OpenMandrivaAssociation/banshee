@@ -1,7 +1,6 @@
 %define name banshee
 %define version 2.0.0
 %define release %mkrel 1
-%define oname banshee
 
 %define build_appledevice 1
 %define build_ipod 1
@@ -43,13 +42,13 @@ Summary: Music player with mobile player support
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: http://download.banshee.fm/%name/stable/%version/%oname-%version.tar.bz2
+Source0: http://download.banshee.fm/%name/stable/%version/%name-%version.tar.bz2
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
 License: MIT
 Group: Sound
 Url: http://banshee.fm
-BuildRoot: %{_tmppath}/%{oname}-%{version}-%{release}-buildroot
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Buildrequires: mono-devel
 %if %mdvver >= 201100
 Buildrequires: mono-zeroconf-devel
@@ -218,7 +217,7 @@ This package contains the pkg-config files needed for building Banshee
 extensions.
 
 %prep
-%setup -qn %oname-%version
+%setup -qn %name-%version
 %apply_patches
 
 %build
@@ -228,7 +227,7 @@ extensions.
  --disable-appledevice \
 %endif
 %if !%build_ipod
- --disable-ipod \
+ --disable-ipod --disable-hal \
 %endif
 %if %build_karma
  --enable-karma \
@@ -244,16 +243,16 @@ rm -rf $RPM_BUILD_ROOT *.lang
 %makeinstall_std MONO=true
 %find_lang %name --all-name --with-gnome
 %if %build_ipod
-ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%oname/Extensions/
+ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%name/Extensions/
 %endif
 %if %build_appledevice
-ln -sf %_libdir/libgpod/libgpod-sharp.dll* %buildroot%_libdir/%oname/Extensions/
+ln -sf %_libdir/libgpod/libgpod-sharp.dll* %buildroot%_libdir/%name/Extensions/
 %endif
 %if %build_karma
-ln -sf %_prefix/lib/karma-sharp/karma-sharp.dll %buildroot%_libdir/%oname/Extensions/
+ln -sf %_prefix/lib/karma-sharp/karma-sharp.dll %buildroot%_libdir/%name/Extensions/
 %endif
 
-rm -f %buildroot%_libdir/%oname/*.a %buildroot%_libdir/%oname/gstreamer-0.10/*.a %buildroot%_libdir/%oname/Backends/*.a
+rm -f %buildroot%_libdir/%name/*.a %buildroot%_libdir/%name/gstreamer-0.10/*.a %buildroot%_libdir/%name/Backends/*.a
 
 #gw fix paths in pkgconfig files
 perl -pi -e "s^/lib$^/%_lib^" %buildroot%_libdir/pkgconfig/*.pc
@@ -276,80 +275,82 @@ fi
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f %oname.lang
+%files -f %name.lang
 %defattr(-,root,root)
 %doc NEWS README AUTHORS
 # ChangeLog
 %_bindir/bamz
-%_bindir/%oname
+%_bindir/%name
 %_bindir/muinshee
-%dir %_libdir/%oname/
-%dir %_libdir/%oname/Backends
-%_libdir/%oname/Backends/Banshee.GStreamer.*
-%_libdir/%oname/Backends/Banshee.Gio.*
-%_libdir/%oname/Backends/Banshee.Gnome.*
-%_libdir/%oname/Backends/Banshee.Hal.*
-%_libdir/%oname/Backends/Banshee.NowPlaying.X11.*
-%_libdir/%oname/Backends/Banshee.Unix.*
-%_libdir/%oname/Backends/libbnpx11.la
-%_libdir/%oname/Backends/libbnpx11.so
-%dir %_libdir/%oname/Extensions
-%_libdir/%oname/Extensions/Banshee.Audiobook.dll*
-%_libdir/%oname/Extensions/Banshee.AudioCd.dll*
+%dir %_libdir/%name/
+%dir %_libdir/%name/Backends
+%_libdir/%name/Backends/Banshee.GStreamer.*
+%_libdir/%name/Backends/Banshee.Gio.*
+%_libdir/%name/Backends/Banshee.Gnome.*
+%if %build_ipod
+%_libdir/%name/Backends/Banshee.Hal.*
+%endif
+%_libdir/%name/Backends/Banshee.NowPlaying.X11.*
+%_libdir/%name/Backends/Banshee.Unix.*
+%_libdir/%name/Backends/libbnpx11.la
+%_libdir/%name/Backends/libbnpx11.so
+%dir %_libdir/%name/Extensions
+%_libdir/%name/Extensions/Banshee.Audiobook.dll*
+%_libdir/%name/Extensions/Banshee.AudioCd.dll*
 %if %build_boo
-%_libdir/%oname/Extensions/Banshee.BooScript.dll*
+%_libdir/%name/Extensions/Banshee.BooScript.dll*
 %endif
-%_libdir/%oname/Extensions/Banshee.AmazonMp3.exe*
-%_libdir/%oname/Extensions/Banshee.Bpm.dll*
-%_libdir/%oname/Extensions/Banshee.CoverArt.dll*
-%_libdir/%oname/Extensions/Banshee.Daap.dll*
-%_libdir/%oname/Extensions/Banshee.Dap.MassStorage.dll*
-%_libdir/%oname/Extensions/Banshee.Dap.dll*
-%_libdir/%oname/Extensions/Banshee.Emusic.dll*
-%_libdir/%oname/Extensions/Banshee.FileSystemQueue.dll*
-%_libdir/%oname/Extensions/Banshee.Fixup.dll*
-%_libdir/%oname/Extensions/Banshee.InternetArchive.dll*
-%_libdir/%oname/Extensions/Banshee.InternetRadio.dll*
-%_libdir/%oname/Extensions/Banshee.Lastfm.dll*
-%_libdir/%oname/Extensions/Banshee.LastfmStreaming.dll*
-%_libdir/%oname/Extensions/Banshee.LibraryWatcher.dll*
-%_libdir/%oname/Extensions/Banshee.MiniMode.dll*
-%_libdir/%oname/Extensions/Banshee.Mpris.dll*
-%_libdir/%oname/Extensions/Banshee.MultimediaKeys.dll*
-%_libdir/%oname/Extensions/Banshee.NotificationArea.dll*
-%_libdir/%oname/Extensions/Banshee.NowPlaying.dll*
-%_libdir/%oname/Extensions/Banshee.PlayerMigration.dll*
-%_libdir/%oname/Extensions/Banshee.PlayQueue.dll*
-%_libdir/%oname/Extensions/Banshee.Podcasting.dll*
-%_libdir/%oname/Extensions/Banshee.YouTube.dll*
+%_libdir/%name/Extensions/Banshee.AmazonMp3.exe*
+%_libdir/%name/Extensions/Banshee.Bpm.dll*
+%_libdir/%name/Extensions/Banshee.CoverArt.dll*
+%_libdir/%name/Extensions/Banshee.Daap.dll*
+%_libdir/%name/Extensions/Banshee.Dap.MassStorage.dll*
+%_libdir/%name/Extensions/Banshee.Dap.dll*
+%_libdir/%name/Extensions/Banshee.Emusic.dll*
+%_libdir/%name/Extensions/Banshee.FileSystemQueue.dll*
+%_libdir/%name/Extensions/Banshee.Fixup.dll*
+%_libdir/%name/Extensions/Banshee.InternetArchive.dll*
+%_libdir/%name/Extensions/Banshee.InternetRadio.dll*
+%_libdir/%name/Extensions/Banshee.Lastfm.dll*
+%_libdir/%name/Extensions/Banshee.LastfmStreaming.dll*
+%_libdir/%name/Extensions/Banshee.LibraryWatcher.dll*
+%_libdir/%name/Extensions/Banshee.MiniMode.dll*
+%_libdir/%name/Extensions/Banshee.Mpris.dll*
+%_libdir/%name/Extensions/Banshee.MultimediaKeys.dll*
+%_libdir/%name/Extensions/Banshee.NotificationArea.dll*
+%_libdir/%name/Extensions/Banshee.NowPlaying.dll*
+%_libdir/%name/Extensions/Banshee.PlayerMigration.dll*
+%_libdir/%name/Extensions/Banshee.PlayQueue.dll*
+%_libdir/%name/Extensions/Banshee.Podcasting.dll*
+%_libdir/%name/Extensions/Banshee.YouTube.dll*
 %if %build_webkit
-%_libdir/%oname/Extensions/Banshee.AmazonMp3.Store.dll*
-%_libdir/%oname/Extensions/Banshee.MiroGuide.dll*
-%_libdir/%oname/Extensions/Banshee.Wikipedia.dll*
+%_libdir/%name/Extensions/Banshee.AmazonMp3.Store.dll*
+%_libdir/%name/Extensions/Banshee.MiroGuide.dll*
+%_libdir/%name/Extensions/Banshee.Wikipedia.dll*
 %endif
-%_libdir/%oname/*.exe*
-%_libdir/%oname/Banshee*.dll*
-%_libdir/%oname/Hyena*.dll*
-%_libdir/%oname/Lastfm*.dll*
-%_libdir/%oname/Migo.dll*
-%_libdir/%oname/Mono*.dll*
-%_libdir/%oname/MusicBrainz.dll*
-%_libdir/%oname/*.so
-%_libdir/%oname/gstreamer-0.10/
-%_libdir/%oname/Banshee.Services.addins
-%attr(644,root,root) %_libdir/%oname/*.la
-%_datadir/%oname/
+%_libdir/%name/*.exe*
+%_libdir/%name/Banshee*.dll*
+%_libdir/%name/Hyena*.dll*
+%_libdir/%name/Lastfm*.dll*
+%_libdir/%name/Migo.dll*
+%_libdir/%name/Mono*.dll*
+%_libdir/%name/MusicBrainz.dll*
+%_libdir/%name/*.so
+%_libdir/%name/gstreamer-0.10/
+%_libdir/%name/Banshee.Services.addins
+%attr(644,root,root) %_libdir/%name/*.la
+%_datadir/%name/
 %_datadir/dbus-1/services/*
-%_datadir/applications/%{oname}.desktop
-%_datadir/applications/%{oname}-audiocd.desktop
-%_datadir/applications/%{oname}-media-player.desktop
+%_datadir/applications/%{name}.desktop
+%_datadir/applications/%{name}-audiocd.desktop
+%_datadir/applications/%{name}-media-player.desktop
 %_datadir/icons/hicolor/*/apps/*
 %_datadir/apps/solid/actions/banshee-play-audiocd.desktop
 %_datadir/mime/packages/banshee-amz.xml
 
 %files devel
 %defattr(-,root,root)
-%_libdir/pkgconfig/%{oname}*.pc
+%_libdir/pkgconfig/%{name}*.pc
 
 %files doc
 %defattr(-,root,root)
@@ -360,33 +361,33 @@ rm -rf $RPM_BUILD_ROOT
 %files ipod
 %defattr(-,root,root)
 %if %build_ipod
-%_libdir/%oname/Extensions/Banshee.Dap.Ipod.dll*
-%_libdir/%oname/Extensions/ipod-sharp*
+%_libdir/%name/Extensions/Banshee.Dap.Ipod.dll*
+%_libdir/%name/Extensions/ipod-sharp*
 %endif
 %if %build_appledevice
-%_libdir/%oname/Extensions/Banshee.Dap.AppleDevice.dll*
-%_libdir/%oname/Extensions/libgpod-sharp.dll*
+%_libdir/%name/Extensions/Banshee.Dap.AppleDevice.dll*
+%_libdir/%name/Extensions/libgpod-sharp.dll*
 %endif
 %endif
 
 %if %build_njb
 %files njb
 %defattr(-,root,root)
-%_libdir/%oname/Extensions/Banshee.Dap/*jb*
+%_libdir/%name/Extensions/Banshee.Dap/*jb*
 %endif
 
 %if %build_mtp
 %files mtp
 %defattr(-,root,root)
-%_libdir/%oname/Mtp.dll*
-%_libdir/%oname/Extensions/Banshee.Dap.Mtp.dll*
+%_libdir/%name/Mtp.dll*
+%_libdir/%name/Extensions/Banshee.Dap.Mtp.dll*
 %endif
 
 %if %build_karma
 %files karma
 %defattr(-,root,root)
-%_libdir/%oname/Extensions/Banshee.Dap.Karma.dll*
-%_libdir/%oname/Extensions/karma-sharp.dll
-%_libdir/%oname/Extensions/karma-sharp.dll.config
+%_libdir/%name/Extensions/Banshee.Dap.Karma.dll*
+%_libdir/%name/Extensions/karma-sharp.dll
+%_libdir/%name/Extensions/karma-sharp.dll.config
 %endif
 
