@@ -1,6 +1,6 @@
 %define name banshee
 %define version 2.0.1
-%define release %mkrel 5
+%define release %mkrel 6
 
 %define build_appledevice 1
 %define build_ipod 1
@@ -45,6 +45,8 @@ Release: %{release}
 Source0: http://download.banshee.fm/%name/stable/%version/%name-%version.tar.bz2
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
+#gw fix for API change in libgpod 0.8.2:
+Patch0: banshee-2.0.0-fix-apple-track-size.patch
 License: MIT
 Group: Sound
 Url: http://banshee.fm
