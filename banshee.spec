@@ -1,9 +1,8 @@
 %define name banshee
-%define version 2.0.1
-%define release %mkrel 6
+%define version 2.1.3
+%define release %mkrel 1
 
 %define build_appledevice 1
-%define build_ipod 1
 %define build_njb 0
 %define build_mtp 1
 %define build_karma 1
@@ -26,7 +25,6 @@
 %define build_clutter 0
 %endif
 
-%{?_without_ipod: %{expand: %%global build_ipod 0}}
 %{?_without_njb: %{expand: %%global build_njb 0}}
 %{?_with_njb: %{expand: %%global build_njb 1}}
 %{?_without_mtp: %{expand: %%global build_mtp 0}}
@@ -42,7 +40,7 @@ Summary: Music player with mobile player support
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: http://download.banshee.fm/%name/stable/%version/%name-%version.tar.bz2
+Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%{name}/%{name}-%{version}.tar.xz
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
 #gw fix for API change in libgpod 0.8.2:
@@ -51,17 +49,16 @@ License: MIT
 Group: Sound
 Url: http://banshee.fm
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Buildrequires: mono-devel
+Buildrequires: mono-devel >= 2.4.3
+Buildrequires: dbus-sharp-glib-devel >= 0.5
 %if %mdvver >= 201100
 Buildrequires: mono-zeroconf-devel
 Buildrequires: mono-addins-devel
-Buildrequires: ndesk-dbus-glib-devel
 Buildrequires: taglib-sharp-devel >= 2.0.3.7
 Buildrequires: notify-sharp-devel
 %else
 Buildrequires: mono-zeroconf
 Buildrequires: mono-addins
-Buildrequires: ndesk-dbus-glib
 Buildrequires: taglib-sharp >= 2.0.3.7
 Buildrequires: notify-sharp
 %endif
@@ -74,7 +71,7 @@ Buildrequires: webkitgtk-devel >= 1.2.2
 %endif
 Buildrequires: libgoogle-data-mono-devel
 Buildrequires: sqlite3-devel
-Buildrequires: libgstreamer-plugins-base-devel
+Buildrequires: libgstreamer-plugins-base-devel >= 0.10.26
 Buildrequires: libxrandr-devel libxxf86vm-devel
 BuildRequires: gstreamer0.10-cdparanoia
 BuildRequires: gstreamer0.10-gnomevfs
@@ -119,21 +116,13 @@ music collection to an mobile device, play music directly from an
 mobile player, create playlists with songs from your library, and
 create audio and MP3 CDs from subsets of your library.
 
-%if %build_ipod || %build_appledevice
+%if %build_appledevice
 %package ipod
 Group: Sound
 Summary: Ipod support for Banshee
 Requires: %name = %version
 %if %build_appledevice
 Buildrequires: libgpod-devel >= 0.7.95
-%endif
-%if %build_ipod
-%if %mdvver >= 201100
-Buildrequires: ipod-sharp-devel >= 0.8.5
-%else
-Buildrequires: ipod-sharp >= 0.8.5
-%endif
-Requires: ipod-sharp >= 0.8.5
 %endif
 
 %description ipod
@@ -228,9 +217,6 @@ extensions.
 %if !%build_appledevice
  --disable-appledevice \
 %endif
-%if !%build_ipod
- --disable-ipod --disable-hal \
-%endif
 %if %build_karma
  --enable-karma \
 %endif
@@ -244,9 +230,6 @@ make
 rm -rf $RPM_BUILD_ROOT *.lang
 %makeinstall_std MONO=true
 %find_lang %name --all-name --with-gnome
-%if %build_ipod
-ln -sf %_prefix/lib/ipod-sharp/{ipod-sharp-ui*,ipod-sharp.dll*} %buildroot%_libdir/%name/Extensions/
-%endif
 %if %build_appledevice
 ln -sf %_libdir/libgpod/libgpod-sharp.dll* %buildroot%_libdir/%name/Extensions/
 %endif
@@ -254,7 +237,7 @@ ln -sf %_libdir/libgpod/libgpod-sharp.dll* %buildroot%_libdir/%name/Extensions/
 ln -sf %_prefix/lib/karma-sharp/karma-sharp.dll %buildroot%_libdir/%name/Extensions/
 %endif
 
-rm -f %buildroot%_libdir/%name/*.a %buildroot%_libdir/%name/gstreamer-0.10/*.a %buildroot%_libdir/%name/Backends/*.a
+rm -f %buildroot%_libdir/%name/*.a %buildroot%_libdir/%name/Backends/*.a
 
 #gw fix paths in pkgconfig files
 perl -pi -e "s^/lib$^/%_lib^" %buildroot%_libdir/pkgconfig/*.pc
@@ -289,9 +272,6 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%name/Backends/Banshee.GStreamer.*
 %_libdir/%name/Backends/Banshee.Gio.*
 %_libdir/%name/Backends/Banshee.Gnome.*
-%if %build_ipod
-%_libdir/%name/Backends/Banshee.Hal.*
-%endif
 %_libdir/%name/Backends/Banshee.NowPlaying.X11.*
 %_libdir/%name/Backends/Banshee.Unix.*
 %_libdir/%name/Backends/libbnpx11.la
@@ -309,6 +289,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%name/Extensions/Banshee.Dap.MassStorage.dll*
 %_libdir/%name/Extensions/Banshee.Dap.dll*
 %_libdir/%name/Extensions/Banshee.Emusic.dll*
+%_libdir/%name/Extensions/Banshee.Emusic.Store.dll*
 %_libdir/%name/Extensions/Banshee.FileSystemQueue.dll*
 %_libdir/%name/Extensions/Banshee.Fixup.dll*
 %_libdir/%name/Extensions/Banshee.InternetArchive.dll*
@@ -338,7 +319,6 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%name/Mono*.dll*
 %_libdir/%name/MusicBrainz.dll*
 %_libdir/%name/*.so
-%_libdir/%name/gstreamer-0.10/
 %_libdir/%name/Banshee.Services.addins
 %attr(644,root,root) %_libdir/%name/*.la
 %_datadir/%name/
@@ -349,6 +329,7 @@ rm -rf $RPM_BUILD_ROOT
 %_datadir/icons/hicolor/*/apps/*
 %_datadir/apps/solid/actions/banshee-play-audiocd.desktop
 %_datadir/mime/packages/banshee-amz.xml
+%_datadir/mime/packages/banshee-emx.xml
 
 %files devel
 %defattr(-,root,root)
@@ -359,17 +340,11 @@ rm -rf $RPM_BUILD_ROOT
 %_prefix/lib/monodoc/sources/banshee-docs*
 %_prefix/lib/monodoc/sources/hyena-docs*
 
-%if %build_ipod || %build_appledevice
+%if %build_appledevice
 %files ipod
 %defattr(-,root,root)
-%if %build_ipod
-%_libdir/%name/Extensions/Banshee.Dap.Ipod.dll*
-%_libdir/%name/Extensions/ipod-sharp*
-%endif
-%if %build_appledevice
 %_libdir/%name/Extensions/Banshee.Dap.AppleDevice.dll*
 %_libdir/%name/Extensions/libgpod-sharp.dll*
-%endif
 %endif
 
 %if %build_njb
