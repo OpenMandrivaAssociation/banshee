@@ -1,6 +1,6 @@
 %define name banshee
 %define version 2.2.0
-%define release %mkrel 1
+%define release %mkrel 2
 
 %define build_appledevice 1
 %define build_njb 0
