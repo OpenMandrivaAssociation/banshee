@@ -1,6 +1,6 @@
 %define name banshee
 %define version 2.2.1
-%define release %mkrel 1
+%define release %mkrel 2
 
 %define build_appledevice 1
 %define build_njb 0
@@ -230,6 +230,9 @@ make
 rm -rf $RPM_BUILD_ROOT *.lang
 %makeinstall_std MONO=true
 %find_lang %name --all-name --with-gnome
+%if %mdvver >= 201200
+ln -sf %_prefix/lib/gio-sharp/gio-sharp.dll* %buildroot%_libdir/%name/Backends/
+%endif
 %if %build_appledevice
 ln -sf %_libdir/libgpod/libgpod-sharp.dll* %buildroot%_libdir/%name/Extensions/
 %endif
@@ -274,6 +277,9 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%name/Backends/Banshee.Gnome.*
 %_libdir/%name/Backends/Banshee.NowPlaying.X11.*
 %_libdir/%name/Backends/Banshee.Unix.*
+%if %mdvver >= 201200
+%_libdir/%name/Backends/gio-sharp.dll*
+%endif
 %_libdir/%name/Backends/libbnpx11.la
 %_libdir/%name/Backends/libbnpx11.so
 %dir %_libdir/%name/Extensions
