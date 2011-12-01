@@ -1,6 +1,6 @@
 %define name banshee
-%define version 2.2.1
-%define release %mkrel 2
+%define version 2.3.2
+%define release %mkrel 1
 
 %define build_appledevice 1
 %define build_njb 0
@@ -81,7 +81,7 @@ Buildrequires: libmtp-devel >= 0.2.1
 %if %build_clutter
 Buildrequires: clutter-devel >= 1.0
 %endif
-BuildRequires: gio-sharp-devel
+BuildRequires: gio-sharp-devel >= 2.22.3
 BuildRequires: gtk-sharp-beans-devel
 #gw not yet packaged:
 #BuildRequires: clutter-sharp
@@ -230,9 +230,7 @@ make
 rm -rf $RPM_BUILD_ROOT *.lang
 %makeinstall_std MONO=true
 %find_lang %name --all-name --with-gnome
-%if %mdvver >= 201200
 ln -sf %_prefix/lib/gio-sharp/gio-sharp.dll* %buildroot%_libdir/%name/Backends/
-%endif
 %if %build_appledevice
 ln -sf %_libdir/libgpod/libgpod-sharp.dll* %buildroot%_libdir/%name/Extensions/
 %endif
@@ -277,14 +275,11 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%name/Backends/Banshee.Gnome.*
 %_libdir/%name/Backends/Banshee.NowPlaying.X11.*
 %_libdir/%name/Backends/Banshee.Unix.*
-%if %mdvver >= 201200
 %_libdir/%name/Backends/gio-sharp.dll*
-%endif
 %_libdir/%name/Backends/libbnpx11.la
 %_libdir/%name/Backends/libbnpx11.so
 %dir %_libdir/%name/Extensions
 %_libdir/%name/Extensions/Banshee.Audiobook.dll*
-%_libdir/%name/Extensions/Banshee.AudioCd.dll*
 %if %build_boo
 %_libdir/%name/Extensions/Banshee.BooScript.dll*
 %endif
@@ -308,6 +303,7 @@ rm -rf $RPM_BUILD_ROOT
 %_libdir/%name/Extensions/Banshee.MultimediaKeys.dll*
 %_libdir/%name/Extensions/Banshee.NotificationArea.dll*
 %_libdir/%name/Extensions/Banshee.NowPlaying.dll*
+%_libdir/%name/Extensions/Banshee.OpticalDisc.dll*
 %_libdir/%name/Extensions/Banshee.PlayerMigration.dll*
 %_libdir/%name/Extensions/Banshee.PlayQueue.dll*
 %_libdir/%name/Extensions/Banshee.Podcasting.dll*
