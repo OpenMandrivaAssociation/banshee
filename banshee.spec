@@ -227,7 +227,7 @@ extensions.
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT *.lang
+rm -rf %{buildroot} *.lang
 %makeinstall_std MONO=true
 %find_lang %name --all-name --with-gnome
 ln -sf %_prefix/lib/gio-sharp/gio-sharp.dll* %buildroot%_libdir/%name/Backends/
@@ -245,7 +245,7 @@ perl -pi -e "s^/lib$^/%_lib^" %buildroot%_libdir/pkgconfig/*.pc
 
 #(nl) KDE Solid integration
 mkdir -p %buildroot/%_datadir/apps/solid/actions/
-install -D -m 644 %{SOURCE1} $RPM_BUILD_ROOT%_datadir/apps/solid/actions/
+install -D -m 644 %{SOURCE1} %{buildroot}%_datadir/apps/solid/actions/
 
 #gw: generated at installation time
 rm -rf %buildroot%_datadir/{applications/mimeinfo.cache,\
@@ -259,7 +259,7 @@ if [ "$1" = "0" -a -x %_bindir/monodoc ]; then %_bindir/monodoc --make-index > /
 fi
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files -f %name.lang
 %defattr(-,root,root)
