@@ -53,7 +53,7 @@ Buildrequires: mono-devel >= 2.4.3
 Buildrequires: dbus-sharp-glib-devel >= 0.5
 %if %mdvver >= 201100
 Buildrequires: mono-zeroconf-devel
-Buildrequires: mono-addins-devel
+Buildrequires: mono-addins-devel >= 0.6.2
 Buildrequires: taglib-sharp-devel >= 2.0.3.7
 Buildrequires: notify-sharp-devel
 %else
