@@ -122,7 +122,7 @@ Group: Sound
 Summary: Ipod support for Banshee
 Requires: %name = %version
 %if %build_appledevice
-Buildrequires: libgpod-devel >= 0.7.95
+Buildrequires: libgpod-devel >= 0.8.2
 %endif
 
 %description ipod
