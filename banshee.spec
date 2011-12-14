@@ -1,6 +1,6 @@
 %define name banshee
 %define version 2.3.2
-%define release %mkrel 1
+%define release %mkrel 2
 
 %define build_appledevice 1
 %define build_njb 0
@@ -251,6 +251,9 @@ install -D -m 644 %{SOURCE1} %{buildroot}%_datadir/apps/solid/actions/
 rm -rf %buildroot%_datadir/{applications/mimeinfo.cache,\
 mime/{XMLnamespaces,a*,g*,icons,m*,subclasses,t*}}
 
+#gw this is done on 2012 automatically, but not for backports:
+find %buildroot%_libdir -name \*.la|xargs rm -fv
+
 %post doc
 %_bindir/monodoc --make-index > /dev/null
 
@@ -276,7 +279,6 @@ rm -rf %{buildroot}
 %_libdir/%name/Backends/Banshee.NowPlaying.X11.*
 %_libdir/%name/Backends/Banshee.Unix.*
 %_libdir/%name/Backends/gio-sharp.dll*
-%_libdir/%name/Backends/libbnpx11.la
 %_libdir/%name/Backends/libbnpx11.so
 %dir %_libdir/%name/Extensions
 %_libdir/%name/Extensions/Banshee.Audiobook.dll*
@@ -322,7 +324,6 @@ rm -rf %{buildroot}
 %_libdir/%name/MusicBrainz.dll*
 %_libdir/%name/*.so
 %_libdir/%name/Banshee.Services.addins
-%attr(644,root,root) %_libdir/%name/*.la
 %_datadir/%name/
 %_datadir/dbus-1/services/*
 %_datadir/applications/%{name}.desktop
