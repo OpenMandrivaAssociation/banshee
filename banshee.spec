@@ -23,8 +23,8 @@
 
 Summary: Music player with mobile player support
 Name: banshee
-Version: 2.3.2
-Release: 3
+Version: 2.3.3
+Release: 1
 License: MIT
 Group: Sound
 Url: http://banshee.fm
