@@ -23,7 +23,7 @@
 
 Summary: Music player with mobile player support
 Name: banshee
-Version: 2.3.3
+Version: 2.3.4
 Release: 1
 License: MIT
 Group: Sound
