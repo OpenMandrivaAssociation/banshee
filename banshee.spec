@@ -23,12 +23,12 @@
 
 Summary: Music player with mobile player support
 Name: banshee
-Version: 2.3.4
+Version: 2.3.5
 Release: 1
 License: MIT
 Group: Sound
 Url: http://banshee.fm
-Source0: ftp://ftp.gnome.org/pub/GNOME/sources/%{name}/%{name}-%{version}.tar.xz
+Source0: http://ftp.gnome.org/pub/GNOME/sources/%{name}/%{name}-%{version}.tar.xz
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
 #gw fix for API change in libgpod 0.8.2:
