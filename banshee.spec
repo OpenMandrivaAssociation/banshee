@@ -23,7 +23,7 @@
 
 Summary: Music player with mobile player support
 Name: banshee
-Version: 2.4.1
+Version: 2.5.0
 Release: 1
 License: MIT
 Group: Sound
@@ -31,8 +31,6 @@ Url: http://banshee.fm
 Source0: http://ftp.gnome.org/pub/GNOME/sources/%{name}/%{name}-%{version}.tar.xz
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1: banshee-play-audiocd.desktop
-#gw fix for API change in libgpod 0.8.2:
-Patch0: banshee-2.0.0-fix-apple-track-size.patch
 
 Buildrequires: mono-devel >= 2.4.3
 Buildrequires: dbus-sharp-glib-devel >= 0.5
