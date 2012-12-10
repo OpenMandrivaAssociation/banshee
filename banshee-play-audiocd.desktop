@@ -1,0 +1,21 @@
+[Desktop Entry]
+X-KDE-Solid-Predicate=[ StorageVolume.ignored == false AND OpticalDisc.availableContent == 'Audio' ]
+Type=Service
+Actions=open;
+
+[Desktop Action open]
+Exec=banshee --redirect-log --device-activate-play=%d
+Icon=media-player-banshee
+Name=Play Audio CD with Banshee
+Name[de]=Audio abspielen mit Banshee
+Name[el]=Αναπαραγωγή του CD ήχου με το Banshee
+Name[es]=Reproduzca CDs de audio con Banshee
+Name[et]=Esita CD Bansheega
+Name[eu]=Jo audio CDak Banshee erabiliz
+Name[fr]=Jouer le CD Audio avec Banshee
+Name[nb]=Spill av CD med Banshee
+Name[pt]=Reproduzir CD Áudio com o Banshee
+Name[ro]=Redă discul audio cu Banshee
+Name[ru]=Проиграть AudioCD в Banshee
+Name[tr]=Banshee ile Ses CD oynatın
+Name[zh_CN]=用 Banshee 播放音乐 CD

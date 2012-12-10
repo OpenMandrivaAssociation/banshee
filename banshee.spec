@@ -1,90 +1,94 @@
-%define build_appledevice 1
-%define build_njb 0
-%define build_mtp 1
-%define build_karma 1
-%define build_boo 1
+%define build_appledevice	1
+%define build_njb		0
+%define build_mtp		1
+%define build_karma		1
+%define build_boo		1
 #gw does not build with clutter 1.1.12:
 #https://bugzilla.gnome.org/show_bug.cgi?id=611153
-%define build_clutter 0
-%define build_webkit 1
+%define build_clutter		0
+%define build_webkit		1
 
-%if %mdvver == 201000
-%define build_clutter 1
-%endif
+%{?_without_njb: %{expand: %%global build_njb 0}}
+%{?_with_njb: %{expand: %%global build_njb 1}}
+%{?_without_mtp: %{expand: %%global build_mtp 0}}
+%{?_with_mtp: %{expand: %%global build_mtp 1}}
+%{?_without_karma: %{expand: %%global build_karma 0}}
+%{?_with_karma: %{expand: %%global build_karma 1}}
+%{?_without_boo: %{expand: %%global build_boo 0}}
+%{?_with_boo: %{expand: %%global build_boo 1}}
+%{?_without_clutter: %{expand: %%global build_clutter 0}}
+%{?_with_clutter: %{expand: %%global build_clutter 1}}
 
-%if %mdvver < 201010
-%define build_webkit 0
-%endif
+%define url_ver	%(echo %{version}|cut -d. -f1,2)
 
-%if %mdvver < 201000
-%define build_karma 0
-%define build_clutter 0
-%endif
-
-Summary: Music player with mobile player support
-Name: banshee
-Version: 2.5.1
-Release: 1
-License: MIT
-Group: Sound
-Url: http://banshee.fm
-Source0: http://ftp.gnome.org/pub/GNOME/sources/%{name}/%{name}-%{version}.tar.xz
+Summary:	Music player with mobile player support
+Name:		banshee
+Version:	2.6.0
+Release:	%mkrel 1
+Source0:	http://download.gnome.org/sources/%{name}/%{url_ver}/%{name}-%{version}.tar.xz
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
-Source1: banshee-play-audiocd.desktop
+Source1:	banshee-play-audiocd.desktop
+License:	MIT
+Group:		Sound
+Url:		http://banshee.fm
 
-Buildrequires: mono-devel >= 2.4.3
-Buildrequires: dbus-sharp-glib-devel >= 0.5
-# both pre & post 201100 provide the same pkgoconfig
-Buildrequires: pkgconfig(mono-zeroconf)
-Buildrequires: pkgconfig(mono-addins) >= 0.6.2
-Buildrequires: pkgconfig(taglib-sharp) >= 2.0.3.7
-Buildrequires: pkgconfig(notify-sharp)
-Buildrequires: gnome-sharp2-devel
-Buildrequires: webkit-sharp-devel
-Buildrequires: gudev-sharp-devel
-Buildrequires: gkeyfile-sharp-devel >= 0.1-1
-%if %build_webkit
-Buildrequires: webkitgtk-devel >= 1.2.2
+BuildRequires:	intltool
+BuildRequires:	pkgconfig(dbus-sharp-glib-1.0) >= 0.5
+BuildRequires:	pkgconfig(gconf-2.0)
+BuildRequires:	pkgconfig(gconf-sharp-2.0) >= 2.8
+BuildRequires:	pkgconfig(gdata-sharp-youtube) >= 1.4
+BuildRequires:	pkgconfig(gio-sharp-2.0) >= 2.22.3
+BuildRequires:	pkgconfig(gkeyfile-sharp)
+BuildRequires:	pkgconfig(gnome-doc-utils)
+BuildRequires:	pkgconfig(gstreamer-0.10) >= 0.10.26
+BuildRequires:	pkgconfig(gstreamer-plugins-base-0.10) >= 0.10.26
+BuildRequires:	pkgconfig(gtk+-2.0) >= 2.8
+BuildRequireS:	pkgconfig(gtk-sharp-beans-2.0)
+BuildRequires:	pkgconfig(gudev-sharp-1.0)
+BuildRequires:	pkgconfig(mono) >= 2.4.3
+BuildRequires:	pkgconfig(mono-addins) >= 0.3.1
+BuildRequires:	pkgconfig(mono-zeroconf)
+BuildRequires:	pkgconfig(notify-sharp)
+BuildRequires:	pkgconfig(sqlite3) >= 3.4
+BuildRequires:	pkgconfig(taglib-sharp) >= 2.0.3.7
+BuildRequires:	pkgconfig(xrandr)
+BuildRequires:	pkgconfig(xxf86vm)
+
+%if %{build_mtp}
+BuildRequires:	pkgconfig(libmtp)
 %endif
-Buildrequires: libgoogle-data-mono-devel
-Buildrequires: sqlite3-devel
-Buildrequires: libgstreamer-plugins-base-devel >= 0.10.26
-Buildrequires: libxrandr-devel libxxf86vm-devel
-BuildRequires: gstreamer0.10-cdparanoia
-BuildRequires: gstreamer0.10-gnomevfs
-BuildRequires: gstreamer0.10-plugins-good
-Buildrequires: gnome-desktop-devel
-Buildrequires: libmtp-devel >= 0.2.1
-%if %build_clutter
-Buildrequires: clutter-devel >= 1.0
+
+%if %{build_appledevice}
+Buildrequires:	pkgconfig(libgpod-sharp)
 %endif
-BuildRequires: gio-sharp-devel >= 2.22.3
-BuildRequires: gtk-sharp-beans-devel
-#gw not yet packaged:
-#BuildRequires: clutter-sharp
-%if %build_boo
-Buildrequires: boo
+
+%if %{build_webkit}
+Buildrequires:	pkgconfig(webkit-1.0) >= 1.2.2
 %endif
-BuildRequires: mono-tools >= 1.1.9
-Buildrequires: librsvg
-Buildrequires: desktop-file-utils
-Buildrequires: gnome-common intltool
-Buildrequires: gnome-doc-utils
-Requires(post): desktop-file-utils
-Requires(postun): desktop-file-utils
-Requires: gstreamer0.10-plugins-base
-Requires: gstreamer0.10-plugins-ugly
-Requires: gstreamer0.10-cdparanoia
-Requires: gstreamer0.10-gnomevfs
-Provides: banshee-gstreamer banshee-official-plugins banshee-1
-Obsoletes: banshee-gstreamer banshee-official-plugins banshee-1
-Suggests: gstreamer0.10-xing
-Suggests: gstreamer0.10-lame
-Suggests: gstreamer0.10-faac
-Suggests: gstreamer0.10-faad
+
+%if %{build_clutter}
+Buildrequires:	pkgconfig(clutter-1.0) >= 1.0.1
+%endif
+
+%if %{build_boo}
+Buildrequires:	pkgconfig(boo) >= 0.8.1
+%endif
+
+%if %{build_karma}
+Buildrequires:	pkgconfig(karma-sharp)
+%endif
+
+Requires:	gstreamer0.10-plugins-base
+Requires:	gstreamer0.10-plugins-ugly
+Requires:	gstreamer0.10-cdparanoia
+Requires:	gstreamer0.10-gnomevfs
+Suggests:	gstreamer0.10-xing
+Suggests:	gstreamer0.10-lame
+Suggests:	gstreamer0.10-faac
+Suggests:	gstreamer0.10-faad
 #gw for bpm detection:
-Suggests: gstreamer0.10-soundtouch
-Suggests: brasero
+Suggests:	gstreamer0.10-soundtouch
+Suggests:	brasero
 
 %description
 With Banshee you can easily import, manage, and play selections from
@@ -93,14 +97,11 @@ music collection to an mobile device, play music directly from an
 mobile player, create playlists with songs from your library, and
 create audio and MP3 CDs from subsets of your library.
 
-%if %build_appledevice
+%if %{build_appledevice}
 %package ipod
-Group: Sound
-Summary: Ipod support for Banshee
-Requires: %{name} = %{version}
-%if %build_appledevice
-Buildrequires: libgpod-devel >= 0.8.2
-%endif
+Group:		Sound
+Summary:	Ipod support for Banshee
+Requires:	%{name} = %{version}-%{release}
 
 %description ipod
 With Banshee you can easily import, manage, and play selections from
@@ -111,12 +112,13 @@ create audio and MP3 CDs from subsets of your library.
 
 Install this package for iPod support in Banshee.
 %endif
-%if %build_njb
+
+%if %{build_njb}
 %package njb
-Group: Sound
-Summary: Nomad jukebox support for Banshee
-Requires: %{name} = %{version}
-Buildrequires: njb-sharp >= 0.3.0
+Group:		Sound
+Summary:	Nomad jukebox support for Banshee
+Requires:	%{name} = %{version}-%{release}
+Buildrequires:	njb-sharp >= 0.3.0
 
 %description njb
 With Banshee you can easily import, manage, and play selections from
@@ -128,12 +130,11 @@ create audio and MP3 CDs from subsets of your library.
 Install this package for Nomad jukebox support in Banshee.
 %endif
 
-%if %build_mtp
+%if %{build_mtp}
 %package mtp
-Group: Sound
-Summary: MTP audio player support for Banshee
-Requires: %{name} = %{version}
-Buildrequires: libmtp-devel >= 0.2.1
+Group:		Sound
+Summary:	MTP audio player support for Banshee
+Requires:	%{name} = %{version}-%{release}
 
 %description mtp
 With Banshee you can easily import, manage, and play selections from
@@ -145,13 +146,11 @@ create audio and MP3 CDs from subsets of your library.
 Install this package for MTP audio player support in Banshee.
 %endif
 
-
-%if %build_karma
+%if %{build_karma}
 %package karma
-Group: Sound
-Summary: Rio Karma audio player support for Banshee
-Requires: %{name} = %{version}
-Buildrequires: karma-sharp
+Group:		Sound
+Summary:	Rio Karma audio player support for Banshee
+Requires:	%{name} = %{version}
 
 %description karma
 With Banshee you can easily import, manage, and play selections from
@@ -164,21 +163,20 @@ Install this package for Rio Karma audio player support in Banshee.
 %endif
 
 %package doc
-Summary: Development documentation for %{name}
-Group: Development/Other
-Requires(post): mono-tools >= 1.1.9
-Requires(postun): mono-tools >= 1.1.9
-Provides: banshee-1-doc
-Obsoletes: banshee-1-doc
+Summary:	Development documentation for %{name}
+Group:		Development/Other
+Requires(post):		mono-tools >= 1.1.9
+Requires(postun):	mono-tools >= 1.1.9
+BuildArch:	noarch
 
 %description doc
 This package contains the API documentation for the %{name} in
 Monodoc format.
 
 %package devel
-Group: Development/Other
-Requires: %{name} = %{version}-%{release}
-Summary: Development parts of %{name}
+Group:		Development/Other
+Requires:	%{name} = %{version}-%{release}
+Summary:	Development parts of %{name}
 
 %description devel
 This package contains the pkg-config files needed for building Banshee
@@ -186,51 +184,49 @@ extensions.
 
 %prep
 %setup -q
-%apply_patches
 
 %build
-%configure2_5x \
-	--with-vendor-build-id="%product_distribution %product_version"  \
+%configure2_5x  \
+	--with-vendor-build-id="%{_vendor} %{distro_release}"  \
+%if %{build_mtp}
 	--enable-mtp \
-%if !%build_appledevice
+%endif
+%if !%{build_appledevice}
 	--disable-appledevice \
 %endif
-%if %build_karma
+%if %{build_karma}
 	--enable-karma \
 %endif
-%if %build_clutter
+%if %{build_clutter}
 	--enable-clutter \
 %endif
-
-make
+	--disable-static \
+	--disable-scrollkeeper \
+	--disable-schemas-install
+%make
 
 %install
-rm -rf %{buildroot} *.lang
 %makeinstall_std MONO=true
-%find_lang %{name} --all-name --with-gnome
-ln -sf %{_prefix}/lib/gio-sharp/gio-sharp.dll* %{buildroot}%{_libdir}/%{name}/Backends/
-%if %build_appledevice
+
+%find_lang %{name} --with-gnome
+
+%if %{build_appledevice}
 ln -sf %{_libdir}/libgpod/libgpod-sharp.dll* %{buildroot}%{_libdir}/%{name}/Extensions/
 %endif
-%if %build_karma
+
+%if %{build_karma}
 ln -sf %{_prefix}/lib/karma-sharp/karma-sharp.dll %{buildroot}%{_libdir}/%{name}/Extensions/
 %endif
 
-rm -f %{buildroot}%{_libdir}/%{name}/*.a %{buildroot}%{_libdir}/%{name}/Backends/*.a
+# we don't want these
+find %{buildroot} -name "*.la" -delete
 
-#gw fix paths in pkgconfig files
-perl -pi -e "s^/lib$^/%_lib^" %{buildroot}%{_libdir}/pkgconfig/*.pc
+# gw fix paths in pkgconfig files
+perl -pi -e "s^/lib$^/%{_lib}^" %{buildroot}%{_libdir}/pkgconfig/*.pc
 
 #(nl) KDE Solid integration
 mkdir -p %{buildroot}/%{_datadir}/apps/solid/actions/
 install -D -m 644 %{SOURCE1} %{buildroot}%{_datadir}/apps/solid/actions/
-
-#gw: generated at installation time
-rm -rf %{buildroot}%{_datadir}/{applications/mimeinfo.cache,\
-mime/{XMLnamespaces,a*,g*,icons,m*,subclasses,t*}}
-
-#gw this is done on 2012 automatically, but not for backports:
-find %{buildroot}%{_libdir} -name \*.la|xargs rm -fv
 
 %post doc
 %{_bindir}/monodoc --make-index > /dev/null
@@ -241,7 +237,6 @@ fi
 
 %files -f %{name}.lang
 %doc NEWS README AUTHORS
-# ChangeLog
 %{_bindir}/bamz
 %{_bindir}/%{name}
 %{_bindir}/muinshee
@@ -256,9 +251,11 @@ fi
 %{_libdir}/%{name}/Backends/libbnpx11.so
 %dir %{_libdir}/%{name}/Extensions
 %{_libdir}/%{name}/Extensions/Banshee.Audiobook.dll*
+
 %if %build_boo
 %{_libdir}/%{name}/Extensions/Banshee.BooScript.dll*
 %endif
+
 %{_libdir}/%{name}/Extensions/Banshee.AmazonMp3.exe*
 %{_libdir}/%{name}/Extensions/Banshee.Bpm.dll*
 %{_libdir}/%{name}/Extensions/Banshee.CoverArt.dll*
@@ -266,7 +263,7 @@ fi
 %{_libdir}/%{name}/Extensions/Banshee.Dap.MassStorage.dll*
 %{_libdir}/%{name}/Extensions/Banshee.Dap.dll*
 %{_libdir}/%{name}/Extensions/Banshee.Emusic.dll*
-%{_libdir}/%{name}/Extensions/Banshee.Emusic.Store.dll*
+%{_libdir}/%{name}/Extensions/Banshee.Emusic.Store*
 %{_libdir}/%{name}/Extensions/Banshee.FileSystemQueue.dll*
 %{_libdir}/%{name}/Extensions/Banshee.Fixup.dll*
 %{_libdir}/%{name}/Extensions/Banshee.InternetArchive.dll*
@@ -284,11 +281,13 @@ fi
 %{_libdir}/%{name}/Extensions/Banshee.PlayQueue.dll*
 %{_libdir}/%{name}/Extensions/Banshee.Podcasting.dll*
 %{_libdir}/%{name}/Extensions/Banshee.YouTube.dll*
+
 %if %build_webkit
 %{_libdir}/%{name}/Extensions/Banshee.AmazonMp3.Store.dll*
 %{_libdir}/%{name}/Extensions/Banshee.MiroGuide.dll*
 %{_libdir}/%{name}/Extensions/Banshee.Wikipedia.dll*
 %endif
+
 %{_libdir}/%{name}/*.exe*
 %{_libdir}/%{name}/Banshee*.dll*
 %{_libdir}/%{name}/Hyena*.dll*
@@ -315,27 +314,25 @@ fi
 %{_prefix}/lib/monodoc/sources/banshee-docs*
 %{_prefix}/lib/monodoc/sources/hyena-docs*
 
-%if %build_appledevice
+%if %{build_appledevice}
 %files ipod
 %{_libdir}/%{name}/Extensions/Banshee.Dap.AppleDevice.dll*
 %{_libdir}/%{name}/Extensions/libgpod-sharp.dll*
 %endif
 
-%if %build_njb
+%if %{build_njb}
 %files njb
 %{_libdir}/%{name}/Extensions/Banshee.Dap/*jb*
 %endif
 
-%if %build_mtp
+%if %{build_mtp}
 %files mtp
 %{_libdir}/%{name}/Mtp.dll*
 %{_libdir}/%{name}/Extensions/Banshee.Dap.Mtp.dll*
 %endif
 
-%if %build_karma
+%if %{build_karma}
 %files karma
 %{_libdir}/%{name}/Extensions/Banshee.Dap.Karma.dll*
-%{_libdir}/%{name}/Extensions/karma-sharp.dll
-%{_libdir}/%{name}/Extensions/karma-sharp.dll.config
+%{_libdir}/%{name}/Extensions/karma-sharp.dll*
 %endif
-
