@@ -24,7 +24,7 @@
 Summary:	Music player with mobile player support
 Name:		banshee
 Version:	2.6.0
-Release:	%mkrel 1
+Release:	2
 Source0:	http://download.gnome.org/sources/%{name}/%{url_ver}/%{name}-%{version}.tar.xz
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1:	banshee-play-audiocd.desktop
