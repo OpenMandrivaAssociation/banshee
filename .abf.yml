@@ -1,3 +1,5 @@
-sources:
-  "banshee-2.0.1.tar.bz2": 6167814da2f1b07e08b40a9a3fd116a6d7e4e164
+removed_sources:
+  banshee-2.0.1.tar.bz2: 6167814da2f1b07e08b40a9a3fd116a6d7e4e164
   banshee-2.6.0.tar.xz: 724f7cbb181f766ca98bca1a8c5eda82ba09a778
+sources:
+  banshee-2.9.1.tar.xz: 3b35e2b63f8940b279b4f57e19228c02282819c4

@@ -23,8 +23,8 @@
 
 Summary:	Music player with mobile player support
 Name:		banshee
-Version:	2.6.0
-Release:	2
+Version:	2.9.1
+Release:	1
 Source0:	http://download.gnome.org/sources/%{name}/%{url_ver}/%{name}-%{version}.tar.xz
 #(nl) KDE Solid integration : from mdv svn  soft/mandriva-kde-translation/trunk/solid/
 Source1:	banshee-play-audiocd.desktop
@@ -34,15 +34,13 @@ Url:		http://banshee.fm
 
 BuildRequires:	intltool
 BuildRequires:	pkgconfig(dbus-sharp-glib-1.0) >= 0.5
-BuildRequires:	pkgconfig(gconf-2.0)
-BuildRequires:	pkgconfig(gconf-sharp-2.0) >= 2.8
 BuildRequires:	pkgconfig(gdata-sharp-youtube) >= 1.4
 BuildRequires:	pkgconfig(gio-sharp-2.0) >= 2.22.3
 BuildRequires:	pkgconfig(gkeyfile-sharp)
 BuildRequires:	pkgconfig(gnome-doc-utils)
-BuildRequires:	pkgconfig(gstreamer-0.10) >= 0.10.26
-BuildRequires:	pkgconfig(gstreamer-plugins-base-0.10) >= 0.10.26
-BuildRequires:	pkgconfig(gtk+-2.0) >= 2.8
+BuildRequires:	pkgconfig(gstreamer-1.0)
+BuildRequires:	pkgconfig(gstreamer-plugins-base-1.0)
+BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequireS:	pkgconfig(gtk-sharp-beans-2.0)
 BuildRequires:	pkgconfig(gudev-sharp-1.0)
 BuildRequires:	pkgconfig(mono) >= 2.4.3
@@ -78,16 +76,15 @@ Buildrequires:	pkgconfig(boo) >= 0.8.1
 Buildrequires:	pkgconfig(karma-sharp)
 %endif
 
-Requires:	gstreamer0.10-plugins-base
-Requires:	gstreamer0.10-plugins-ugly
-Requires:	gstreamer0.10-cdparanoia
-Requires:	gstreamer0.10-gnomevfs
-Suggests:	gstreamer0.10-xing
-Suggests:	gstreamer0.10-lame
-Suggests:	gstreamer0.10-faac
-Suggests:	gstreamer0.10-faad
+Requires:	gstreamer1.0-plugins-base
+Requires:	gstreamer1.0-plugins-ugly
+Requires:	gstreamer1.0-cdparanoia
+Suggests:	gstreamer1.0-xing
+Suggests:	gstreamer1.0-lame
+Suggests:	gstreamer1.0-faac
+Suggests:	gstreamer1.0-faad
 #gw for bpm detection:
-Suggests:	gstreamer0.10-soundtouch
+Suggests:	gstreamer1.0-soundtouch
 Suggests:	brasero
 
 %description
@@ -186,7 +183,7 @@ extensions.
 %setup -q
 
 %build
-%configure2_5x  \
+%configure  \
 	--with-vendor-build-id="%{_vendor} %{distro_release}"  \
 %if %{build_mtp}
 	--enable-mtp \
