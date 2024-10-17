@@ -30,7 +30,7 @@ Source0:	http://download.gnome.org/sources/%{name}/%{url_ver}/%{name}-%{version}
 Source1:	banshee-play-audiocd.desktop
 License:	MIT
 Group:		Sound
-Url:		http://banshee.fm
+Url:		https://banshee.fm
 
 BuildRequires:	intltool
 BuildRequires:	pkgconfig(dbus-sharp-glib-1.0) >= 0.5
