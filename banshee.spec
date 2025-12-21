@@ -32,6 +32,11 @@ License:	MIT
 Group:		Sound
 Url:		https://banshee.fm
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	intltool
 BuildRequires:	pkgconfig(dbus-sharp-glib-1.0) >= 0.5
 BuildRequires:	pkgconfig(gdata-sharp-youtube) >= 1.4
